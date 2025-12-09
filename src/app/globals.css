@@ -159,3 +159,13 @@ html::-webkit-scrollbar-thumb {
   animation: none;
   mix-blend-mode: normal;
 }
+
+:root {
+  --toast-bg: rgba(246, 243, 237, 0.85);
+  --toast-text: #313851;
+}
+
+.dark {
+  --toast-bg: rgba(31, 36, 51, 0.85);
+  --toast-text: #f6f3ed;
+}

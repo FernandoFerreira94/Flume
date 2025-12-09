@@ -1,5 +1,5 @@
 import { TextAnimate } from "@/components/ui/text-animate";
-import { SheetRegister } from "./SheetRegister";
+import { SheetRegister } from "../Header/SheetRegister";
 export function TextLogin() {
   return (
     <section className="w-1/2 pr-20 text-[#343C52] dark:text-[#f6f3ed]">

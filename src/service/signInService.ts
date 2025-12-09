@@ -1,0 +1,42 @@
+// service/signInService.ts
+
+import { supabase } from "../supabase/supabase";
+import { SingInSchemaType } from "../lib/zod/signInSchema";
+
+export async function signInService({ email, password }: SingInSchemaType) {
+  try {
+    const { data: authData, error: authError } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+    if (authError) {
+      console.log(authError?.message);
+      throw new Error(`Email ou senha incorretos`);
+    }
+
+    const userId = authData.user?.id;
+    const session = authData.session;
+
+    if (!userId || !session) {
+      throw new Error("Erro ao logar: Usuário ou sessão não encontrados.");
+    }
+
+    const { data: userData, error: userDataError } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", userId)
+      .single();
+
+    if (userDataError) {
+      throw new Error(
+        `Erro ao buscar dados do usuário: ${userDataError.message}`
+      );
+    }
+
+    return { user: userData, session };
+  } catch (error) {
+    throw error;
+  }
+}

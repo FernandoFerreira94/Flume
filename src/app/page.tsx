@@ -1,8 +1,8 @@
-import { Header } from "@/src/components/Home/header";
+import { Header } from "@/src/components/Header/header";
 import { TextLogin } from "@/src/components/Home/TextHome";
 import { RelatorioLogin } from "../components/Home/RelatorioLogin";
 import { SeccionCard } from "../components/Home/SeccionCard";
-import { Footer } from "../components/Home/Footer";
+import { Footer } from "../components/Footer/Footer";
 export default function Login() {
   return (
     <>
