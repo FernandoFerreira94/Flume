@@ -21,9 +21,10 @@ import { SheetRegister } from "./SheetRegister";
 import { SingInSchemaType, SingInSchema } from "@/src/lib/zod/signInSchema";
 import { useSignInMutationFn } from "@/src/hook/userSingIn";
 import { toast } from "sonner";
+import Cookie from "js-cookie";
+
 export function LoginSheet() {
   const [showPassword, setShowPassword] = useState(false);
-
   const router = useRouter();
   const {
     register,
@@ -35,8 +36,11 @@ export function LoginSheet() {
 
   const { mutate, isPending } = useSignInMutationFn({
     onSuccess: (data) => {
-      console.log(data);
-      router.push("/dashboard");
+      if (data.session) {
+        Cookie.set("flume-token", data.session.access_token, { expires: 7 });
+
+        router.push("/dashboard");
+      }
     },
     onError: (error) => {
       toast.error(error.message);
@@ -96,6 +100,7 @@ export function LoginSheet() {
               id="email"
               placeholder="seuemail@exemplo.com"
               className="h-11"
+              value={"fernandoeqp59@gmail.com"}
               {...register("email")}
             />
             {errors.email && (
@@ -116,6 +121,7 @@ export function LoginSheet() {
                 placeholder="••••••••"
                 className="h-11"
                 {...register("password")}
+                value={"Foreverxds2@"}
               />
 
               <button
