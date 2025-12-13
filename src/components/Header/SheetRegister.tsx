@@ -23,7 +23,7 @@ import { useSignUp } from "@/src/hook/userSingUp";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { SignUpSchemaType, SignUpSchema } from "@/src/lib/zod/signUpSchema";
-import { Calendar22 } from "../dateBirth";
+import { Calendar22 } from "../../../components/ui/dateBirth";
 import { Controller } from "react-hook-form";
 
 interface SheetRegisterProps {
@@ -45,7 +45,7 @@ export function SheetRegister({ titulo }: SheetRegisterProps) {
 
   const { mutate, isPending } = useSignUp({
     onSuccess: (data) => {
-        router.push("/");
+      router.push("/");
       console.log(data);
     },
     onError: (error) => {
@@ -54,7 +54,7 @@ export function SheetRegister({ titulo }: SheetRegisterProps) {
   });
 
   function onSubmit(data: SignUpSchemaType) {
-     mutate(data);
+    mutate(data);
     console.log(data);
     return new Promise((resolve) => setTimeout(resolve, 1000));
   }
@@ -194,7 +194,7 @@ export function SheetRegister({ titulo }: SheetRegisterProps) {
 
           <p className="text-center text-gray-700 text-sm mt-6">
             Já possui conta?{" "}
-            <button className="text-[#313851] font-semibold hover:underline">
+            <button className="text-[#313851]  font-semibold hover:underline">
               <LoginSheet />
             </button>
           </p>

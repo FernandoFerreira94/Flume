@@ -1,11 +1,13 @@
 import { Card, CardContent } from "@/components/ui/card";
-
+import { color } from "@/src/styles/color";
 export function RelatorioLogin() {
   return (
     <>
-      <Card className="relative  w-2/4 h-100 ">
+      <Card className="relative  w-2/5 h-100 ">
         <CardContent className="gap-4 flex flex-col ">
-          <div className="w-full bg-[#3E4864] dark:bg-[#242731]  h-22 rounded-2xl shadow-md px-8 text-gray-100/80 flex flex-col justify-center gap-1">
+          <div
+            className={`w-full  h-22 rounded-2xl shadow-md px-8 text-gray-100/80 flex flex-col justify-center gap-1 ${color.backGroundGradient}`}
+          >
             <p className="text-md">Gastos previsto do mês</p>
             <p className="text-3xl font-bold text-gray-100">R$ 2.450,00</p>
           </div>

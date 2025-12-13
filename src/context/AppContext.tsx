@@ -1,14 +1,11 @@
 "use client";
 import { createContext } from "react";
-import { Session, User } from "@supabase/supabase-js";
-import { SignUpSchemaType } from "../lib/zod/signUpSchema";
+import { Session } from "@supabase/supabase-js";
 
 interface AppContextType {
-  user: User | null;
-  session: Session | null;
   isAuthenticated: boolean;
   loading: boolean;
-  setUser: (user: User | null) => void;
+  session: Session | null;
 }
 
 export const AppContext = createContext<AppContextType | undefined>(undefined);

@@ -8,7 +8,7 @@ export default function Login() {
     <>
       <main className="container mx-auto ">
         <Header />
-        <section className="w-full flex mt-40 h-full">
+        <section className="w-full flex justify-around mt-40 h-full">
           <TextLogin />
           <RelatorioLogin />
         </section>

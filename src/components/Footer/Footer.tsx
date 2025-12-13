@@ -1,8 +1,11 @@
+import { color } from "@/src/styles/color";
 import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="flex h-24 w-full items-center justify-center bg-[#3E4864] rounded-t-4xl mt-20">
+    <footer
+      className={`flex h-24 w-full items-center justify-center rounded-t-4xl mt-20 ${color.backGroundGradient}`}
+    >
       <Link
         href="https://fernandodev.vercel.app/"
         target="_blank"

@@ -1,13 +1,14 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { color } from "@/src/styles/color";
 
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card"
       className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-3xl border py-6 shadow-sm dark:bg-[#2E344A]",
+        `text-card-foreground flex flex-col gap-6 rounded-3xl border py-6  shadow-xl dark:bg-[#2E344A] ${color.light.surface}`,
         className
       )}
       {...props}

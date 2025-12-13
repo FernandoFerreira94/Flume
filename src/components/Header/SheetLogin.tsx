@@ -22,6 +22,7 @@ import { SingInSchemaType, SingInSchema } from "@/src/lib/zod/signInSchema";
 import { useSignInMutationFn } from "@/src/hook/userSingIn";
 import { toast } from "sonner";
 import Cookie from "js-cookie";
+import { useAppContext } from "@/src/context/useAppContext";
 
 export function LoginSheet() {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +37,7 @@ export function LoginSheet() {
 
   const { mutate, isPending } = useSignInMutationFn({
     onSuccess: (data) => {
-      if (data.session) {
+      if (data.session && data.user) {
         Cookie.set("flume-token", data.session.access_token, { expires: 7 });
 
         router.push("/dashboard");
