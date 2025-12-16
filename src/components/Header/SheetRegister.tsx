@@ -61,17 +61,17 @@ export function SheetRegister({ titulo }: SheetRegisterProps) {
 
   return (
     <Sheet>
-      <SheetTrigger className="cursor-pointer h-full w-full">
+      <SheetTrigger className="cursor-pointer h-full w-full ">
         {titulo}
       </SheetTrigger>
 
       <SheetContent className="px-6">
         <SheetHeader>
-          <SheetTitle className="text-xl mt-10 text-gray-800">
+          <SheetTitle className="text-xl mt-10 text-gray-800 ">
             Crie sua conta
           </SheetTitle>
 
-          <SheetDescription className="pt-4 text-gray-600">
+          <SheetDescription className="pt-4 text-gray-600 ">
             Preencha os dados abaixo para começar a usar o Flume e organizar
             suas finanças.
           </SheetDescription>

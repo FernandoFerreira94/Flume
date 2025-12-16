@@ -4,6 +4,8 @@ import { AppContext } from "./AppContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { supabase } from "@/src/supabase/supabase";
 import type { Session } from "@supabase/supabase-js";
+import { UserSchemaProps } from "../lib/zod/userSchema";
+import { useGetUser } from "../hook/RectQuery/useGetUser";
 interface AppProviderProps {
   children: ReactNode;
 }
@@ -28,12 +30,15 @@ export function AppProvider({ children }: AppProviderProps) {
     return () => listener.subscription.unsubscribe();
   }, []);
 
+  const user = useGetUser(session?.user.id as string).data as UserSchemaProps;
+
   return (
     <AppContext.Provider
       value={{
         session,
         isAuthenticated: !!session,
         loading,
+        user,
       }}
     >
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

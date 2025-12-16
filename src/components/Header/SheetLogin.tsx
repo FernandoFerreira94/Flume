@@ -147,12 +147,12 @@ export function LoginSheet() {
           <Button
             variant="outline"
             type="submit"
-            className="w-full h-10 flex items-center gap-3"
+            className="w-full h-10 flex items-center gap-3 disabled:opacity-100"
             disabled={isSubmitting || isPending}
           >
             {isSubmitting || isPending ? (
               <>
-                <Spinner /> Carregando
+                <Spinner />
               </>
             ) : (
               <>
