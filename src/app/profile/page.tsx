@@ -9,16 +9,18 @@ import { color } from "@/src/styles/color";
 import { Mail, Calendar } from "lucide-react";
 import { useAppContext } from "@/src/context/useAppContext";
 import { Skeleton } from "@/components/ui/skeleton";
+import { formatDate } from "@/src/actives/formatDate";
 
 export default function Profile() {
   const { user } = useAppContext();
+  const dateFormatada = formatDate(user?.created_at as string);
 
   return (
     <Main>
       <SideBar />
       <HeaderProfile />
       <Section>
-        <Card className="p-4 rounded-lg">
+        <Card className={`p-4 rounded-lg  ${color.border}`}>
           <CardContent className="flex gap-4 p-0">
             <Mail size={40} className={`bg-gray-200 p-2.5 rounded-md `} />
             <div>
@@ -49,7 +51,7 @@ export default function Profile() {
               </Label>
               <p>
                 {user ? (
-                  user.created_at
+                  dateFormatada
                 ) : (
                   <Skeleton className="h-6 w-50 rounded-md" />
                 )}
