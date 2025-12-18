@@ -1,19 +1,38 @@
 "use client";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import HeaderProfile from "@/src/components/Header/HeaderProfile";
 import { Main } from "@/src/components/Main";
 import { Section } from "@/src/components/Section";
 import { SideBar } from "@/src/components/SideBar/sideBar";
 import { color } from "@/src/styles/color";
-import { Mail, Calendar } from "lucide-react";
+import { Mail, Calendar, LogOut } from "lucide-react";
 import { useAppContext } from "@/src/context/useAppContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/src/actives/formatDate";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { logoutService } from "@/src/service/logoutService";
+import Cookies from "js-cookie";
 
 export default function Profile() {
-  const { user } = useAppContext();
+  const { user, setSession } = useAppContext();
+  const router = useRouter();
   const dateFormatada = formatDate(user?.created_at as string);
+
+  async function handleLogout() {
+    await logoutService();
+    setSession(null);
+    Cookies.remove("flume-token");
+    localStorage.setItem("theme", "light");
+    router.push("/");
+  }
 
   return (
     <Main>
@@ -59,6 +78,29 @@ export default function Profile() {
             </div>
           </CardContent>
         </Card>
+
+        <Card className={`px-4 py-6 rounded-lg mt-8  ${color.border}`}>
+          <CardHeader className="gap-y-4">
+            <CardTitle className="font-medium">Sobre o Flume</CardTitle>
+
+            <CardDescription>
+              Flume é seu gerenciador financeiro pessoal focado no futuro.
+              Antecipe despesas, organize suas finanças e mantenha o controle
+              total sobre seus gastos.
+            </CardDescription>
+            <CardDescription>
+              Versão <span className="font-semibold text-gray-800">1.0.0</span>
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <Button
+          onClick={handleLogout}
+          variant={"outline"}
+          className="w-full mt-4 h-12 text-red-500 border-red-500 hover:bg-red-50 hover:text-red-500"
+        >
+          {" "}
+          <LogOut /> Sair{" "}
+        </Button>
       </Section>
     </Main>
   );

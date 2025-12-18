@@ -7,6 +7,7 @@ interface AppContextType {
   isAuthenticated: boolean;
   loading: boolean;
   session: Session | null;
+  setSession: (session: Session | null) => void;
   user: UserSchemaProps;
 }
 

@@ -60,7 +60,7 @@ export function LoginSheet() {
         Entrar
       </SheetTrigger>
 
-      <SheetContent className="px-6 py-10 flex flex-col gap-6">
+      <SheetContent className="px-6 py-10 flex flex-col gap-6 ">
         <SheetHeader className="space-y-2">
           <SheetTitle className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
             Acesse sua conta
@@ -75,7 +75,7 @@ export function LoginSheet() {
         {/* Botão Google */}
         <Button
           variant="default"
-          className="w-full h-10 flex items-center gap-3  font-medium"
+          className="w-full h-10 flex items-center gap-3  font-medium "
         >
           <FaGoogle size={22} />
           Continuar com Google
@@ -84,16 +84,16 @@ export function LoginSheet() {
         {/* Separador */}
         <div className="flex items-center gap-3 my-2">
           <div className=" bg-gray-300 dark:bg-gray-700" />{" "}
-          <hr className="w-full h-px bg-gray-300 dark:bg-gray-700" />
-          <span className="text-gray-500 text-sm">ou</span>
-          <hr className="w-full h-px bg-gray-300 dark:bg-gray-700" />
+          <hr className="w-full h-px bg-gray-300 dark:bg-gray-300" />
+          <span className="text-gray-500 dark:text-gray-300 text-sm">ou</span>
+          <hr className="w-full h-px bg-gray-300 dark:bg-gray-300" />
           <div className="  bg-gray-300 dark:bg-gray-700" />
         </div>
 
         {/* Login por email */}
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-1">
-            <Label htmlFor="email" className="text-sm">
+            <Label htmlFor="email" className="text-sm ">
               E-mail
             </Label>
             <Input
@@ -162,9 +162,9 @@ export function LoginSheet() {
             )}
           </Button>
         </form>
-        <p className="text-center text-gray-700 text-sm ">
+        <p className="text-center text-gray-700 text-sm dark:text-[#f6f3ed]/60">
           Não possui uma conta?{" "}
-          <button className="text-[#313851] font-semibold hover:underline">
+          <button className="text-[#313851] font-semibold hover:underline dark:text-[#A5B4FC]">
             <SheetRegister titulo="Clica aqui" />
           </button>
         </p>

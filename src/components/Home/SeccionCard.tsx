@@ -7,10 +7,12 @@ export function SeccionCard() {
         <div
           className={` ${color.backGroundGradient} flex items-center justify-center rounded-xl p-4 w-16 shadow-lg transition hover:scale-110 duration-400 ease-in-out`}
         >
-          <Calendar size={30} className={`${color.textOnPrimary}`} />
+          <Calendar size={30} className={`text-[#f6f3ed]`} />
         </div>
 
-        <h1 className="text-xl font-semibold text-gray-800">Planje o futuro</h1>
+        <h1 className="text-xl font-semibold text-gray-800 dark:text-[#f6f3ed]">
+          Planje o futuro
+        </h1>
         <p className={`${color.textSecondary} text-sm`}>
           Visualize suas despesas dos próximos meses
         </p>
@@ -19,10 +21,10 @@ export function SeccionCard() {
         <div
           className={` ${color.backGroundGradient} flex items-center justify-center rounded-xl p-4 w-16 shadow-lg transition hover:scale-110 duration-400 ease-in-out`}
         >
-          <CreditCard size={30} className={`${color.textOnPrimary}`} />
+          <CreditCard size={30} className={`text-[#f6f3ed]`} />
         </div>
 
-        <h1 className="text-xl font-semibold text-gray-800">
+        <h1 className="text-xl font-semibold text-gray-800 dark:text-[#f6f3ed]">
           Controle parcelas
         </h1>
         <p className={`${color.textSecondary} text-sm`}>
@@ -33,10 +35,10 @@ export function SeccionCard() {
         <div
           className={` ${color.backGroundGradient} flex items-center justify-center rounded-xl p-4 w-16 shadow-lg transition hover:scale-110 duration-400 ease-in-out`}
         >
-          <TrendingUp size={30} className={`${color.textOnPrimary} `} />
+          <TrendingUp size={30} className={`text-[#f6f3ed] `} />
         </div>
 
-        <h1 className="text-xl font-semibold text-gray-800">
+        <h1 className="text-xl font-semibold text-gray-800 dark:text-[#f6f3ed]">
           Análise inteligente
         </h1>
         <p className={`${color.textSecondary} text-sm`}>

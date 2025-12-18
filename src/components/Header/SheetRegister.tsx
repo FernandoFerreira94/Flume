@@ -67,11 +67,11 @@ export function SheetRegister({ titulo }: SheetRegisterProps) {
 
       <SheetContent className="px-6">
         <SheetHeader>
-          <SheetTitle className="text-xl mt-10 text-gray-800 ">
+          <SheetTitle className="text-xl mt-10 text-gray-800 dark:text-[#f6f3ed]">
             Crie sua conta
           </SheetTitle>
 
-          <SheetDescription className="pt-4 text-gray-600 ">
+          <SheetDescription className="pt-4 text-gray-600 dark:text-[#f6f3ed]/60">
             Preencha os dados abaixo para começar a usar o Flume e organizar
             suas finanças.
           </SheetDescription>
@@ -183,7 +183,7 @@ export function SheetRegister({ titulo }: SheetRegisterProps) {
 
             {/* Botão Criar Conta */}
             <Button
-              variant="default"
+              variant="outline"
               disabled={isSubmitting || isPending}
               type="submit"
               className="w-full mt-3 h-10"
@@ -192,9 +192,9 @@ export function SheetRegister({ titulo }: SheetRegisterProps) {
             </Button>
           </form>
 
-          <p className="text-center text-gray-700 text-sm mt-6">
+          <p className="text-center  text-gray-700 text-sm mt-6 dark:text-[#f6f3ed]/60">
             Já possui conta?{" "}
-            <button className="text-[#313851]  font-semibold hover:underline">
+            <button className="text-[#313851] dark:text-[#A5B4FC] font-semibold hover:underline">
               <LoginSheet />
             </button>
           </p>

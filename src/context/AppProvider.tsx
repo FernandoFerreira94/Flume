@@ -36,6 +36,7 @@ export function AppProvider({ children }: AppProviderProps) {
     <AppContext.Provider
       value={{
         session,
+        setSession,
         isAuthenticated: !!session,
         loading,
         user,

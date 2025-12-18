@@ -4,7 +4,7 @@ import Link from "next/link";
 export function Footer() {
   return (
     <footer
-      className={`flex h-24 w-full items-center justify-center rounded-t-4xl mt-20 ${color.backGroundGradient}`}
+      className={`flex h-24 w-full items-center absolute bottom-0 justify-center mt-auto rounded-t-4xl float-end  bg-[#1F2937] dark:bg-[#374151] ${color.border} border-t `}
     >
       <Link
         href="https://fernandodev.vercel.app/"
