@@ -14,7 +14,7 @@ export const SignUpSchema = z.object({
     .pipe(CapitalizedString),
   email: z.string().email("Email inválido"),
   password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
-  birth_date: z.string().min(10, "Data de nascimento inválida"),
+  birth_date: z.string().optional().nullable(),
 });
 
 export type SignUpSchemaType = z.infer<typeof SignUpSchema>;

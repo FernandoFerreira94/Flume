@@ -18,17 +18,18 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/src/actives/formatDate";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { logoutService } from "@/src/service/logoutService";
 import Cookies from "js-cookie";
+import { supabaseBrowser } from "@/src/lib/supabase/client";
+import { Calendar22 } from "@/components/ui/dateBirth";
 
 export default function Profile() {
-  const { user, setSession } = useAppContext();
+  const { user } = useAppContext();
   const router = useRouter();
   const dateFormatada = formatDate(user?.created_at as string);
-
+  const dataNascimentoFormatada = formatDate(user?.birth_date as string);
+  console.log(user);
   async function handleLogout() {
-    await logoutService();
-    setSession(null);
+    supabaseBrowser.auth.signOut();
     Cookies.remove("flume-token");
     localStorage.setItem("theme", "light");
     router.push("/");
@@ -49,13 +50,11 @@ export default function Profile() {
               >
                 Email
               </Label>
-              <p>
-                {user ? (
-                  user.email
-                ) : (
-                  <Skeleton className="h-6 w-50 rounded-md" />
-                )}
-              </p>
+              {user ? (
+                <p>{user.email}</p>
+              ) : (
+                <Skeleton className="h-6 w-50 rounded-md" />
+              )}
             </div>
           </CardContent>
           <hr />
@@ -68,13 +67,36 @@ export default function Profile() {
               >
                 Membro desde
               </Label>
-              <p>
-                {user ? (
-                  dateFormatada
-                ) : (
-                  <Skeleton className="h-6 w-50 rounded-md" />
-                )}
-              </p>
+              {user ? (
+                <p>{dateFormatada}</p>
+              ) : (
+                <Skeleton className="h-6 w-50 rounded-md" />
+              )}
+            </div>
+          </CardContent>
+          <hr />
+          <CardContent className="flex gap-4 p-0">
+            <Calendar size={40} className={`bg-gray-200 p-2.5 rounded-md `} />
+            <div>
+              <Label
+                htmlFor="Data de nascimento"
+                className={`text-[12px] ${color.textSecondary}`}
+              >
+                {user?.birth_date && "Data de nascimento"}
+              </Label>
+              {user ? (
+                <div>
+                  <p>
+                    {user?.birth_date ? (
+                      dataNascimentoFormatada
+                    ) : (
+                      <Calendar22 onChange={() => {}} />
+                    )}
+                  </p>
+                </div>
+              ) : (
+                <Skeleton className="h-6 w-50 rounded-md" />
+              )}
             </div>
           </CardContent>
         </Card>
@@ -89,7 +111,10 @@ export default function Profile() {
               total sobre seus gastos.
             </CardDescription>
             <CardDescription>
-              Versão <span className="font-semibold text-gray-800">1.0.0</span>
+              Versão{" "}
+              <span className="font-semibold text-gray-800 dark:text-[#f6f3ed]">
+                1.0.0
+              </span>
             </CardDescription>
           </CardHeader>
         </Card>

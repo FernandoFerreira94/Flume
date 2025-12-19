@@ -56,7 +56,6 @@ export function SheetRegister({ titulo }: SheetRegisterProps) {
   function onSubmit(data: SignUpSchemaType) {
     mutate(data);
     console.log(data);
-    return new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
   return (

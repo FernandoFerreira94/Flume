@@ -5,7 +5,7 @@ import { queryKey } from "./queryKey";
 import { UserSchemaProps } from "@/src/lib/zod/userSchema";
 
 import Cookies from "js-cookie";
-import { supabase } from "@/src/supabase/supabase";
+import { supabaseBrowser } from "@/src/lib/supabase/client";
 
 import { redirect } from "next/navigation";
 
@@ -14,7 +14,7 @@ const getUserData = async (): Promise<UserSchemaProps> => {
 
   const {
     data: { session },
-  } = await supabase.auth.getSession();
+  } = await supabaseBrowser.auth.getSession();
 
   if (!storedToken && !session) {
     return redirect("/");

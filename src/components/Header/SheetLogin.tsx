@@ -21,8 +21,7 @@ import { SheetRegister } from "./SheetRegister";
 import { SingInSchemaType, SingInSchema } from "@/src/lib/zod/signInSchema";
 import { useSignInMutationFn } from "@/src/hook/userSingIn";
 import { toast } from "sonner";
-import Cookie from "js-cookie";
-import { useAppContext } from "@/src/context/useAppContext";
+import { loginWithGoogleService } from "@/src/service/loginWithGoogleService";
 
 export function LoginSheet() {
   const [showPassword, setShowPassword] = useState(false);
@@ -38,8 +37,6 @@ export function LoginSheet() {
   const { mutate, isPending } = useSignInMutationFn({
     onSuccess: (data) => {
       if (data.session && data.user) {
-        Cookie.set("flume-token", data.session.access_token, { expires: 7 });
-
         router.push("/dashboard");
       }
     },
@@ -74,6 +71,7 @@ export function LoginSheet() {
 
         {/* Botão Google */}
         <Button
+          onClick={loginWithGoogleService}
           variant="default"
           className="w-full h-10 flex items-center gap-3  font-medium "
         >
@@ -101,7 +99,6 @@ export function LoginSheet() {
               id="email"
               placeholder="seuemail@exemplo.com"
               className="h-11"
-              value={"fernandoeqp59@gmail.com"}
               {...register("email")}
             />
             {errors.email && (
@@ -122,7 +119,6 @@ export function LoginSheet() {
                 placeholder="••••••••"
                 className="h-11"
                 {...register("password")}
-                value={"Foreverxds2@"}
               />
 
               <button

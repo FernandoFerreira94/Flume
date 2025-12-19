@@ -5,7 +5,6 @@ import { color } from "@/src/styles/color";
 import { LoginSheet } from "./SheetLogin";
 import { SheetRegister } from "./SheetRegister";
 import { PiChartLineUp } from "react-icons/pi";
-import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 
 export function Header() {
   return (

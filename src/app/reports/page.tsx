@@ -1,5 +1,4 @@
 "use client";
-import { Card } from "@/components/ui/card";
 import { HeaderExpense } from "@/src/components/Header/HeaderExpense";
 import { Main } from "@/src/components/Main";
 import CardReports from "@/src/components/reports/CardReposts";

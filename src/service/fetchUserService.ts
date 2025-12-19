@@ -1,11 +1,12 @@
-import { supabase } from "../supabase/supabase";
+import { supabaseBrowser } from "../lib/supabase/client";
 
 import { UserSchema, UserSchemaProps } from "../lib/zod/userSchema";
 
-export async function fetchUserService
-(userId: string): Promise<UserSchemaProps> {
-  const { data, error } = await supabase
-    .from("users")
+export async function fetchUserService(
+  userId: string
+): Promise<UserSchemaProps> {
+  const { data, error } = await supabaseBrowser
+    .from("profiles")
     .select("*")
     .eq("id", userId)
     .single();

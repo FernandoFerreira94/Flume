@@ -1,24 +1,20 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { createMiddlewareClient } from "@/src/lib/supabase/middleware";
 
-import type { NextRequest } from "next/server";
+export async function middleware(request: NextRequest) {
+  const { supabase, response } = createMiddlewareClient(request);
 
-export function middleware(req: NextRequest) {
-  const token = req.cookies.get("flume-token")?.value;
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  const isPrivateRoute = request.nextUrl.pathname.startsWith("/dashboard");
 
-  // Lista de rotas públicas
-  const publicPaths = ["/"];
-
-  // Verifica se a rota atual é uma rota pública
-  const isPublicPath = publicPaths.includes(req.nextUrl.pathname);
-
-  if (token && isPublicPath) {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+  if (isPrivateRoute && !session) {
+    const loginUrl = new URL("/", request.url);
+    return NextResponse.redirect(loginUrl);
   }
 
-  if (!token && !isPublicPath) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {

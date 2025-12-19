@@ -31,7 +31,7 @@ export default function RootLayout({
         className={`
             ${geistSans.variable} 
             ${geistMono.variable} 
-            ${color.light.background}
+            ${color.background}
             antialiased 
             w-full 
             font-sans

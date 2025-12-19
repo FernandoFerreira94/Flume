@@ -5,7 +5,6 @@ import { Main } from "@/src/components/Main";
 import { Section } from "@/src/components/Section";
 import { HeaderDashboard } from "@/src/components/Header/HeaderDashboard";
 import { useAppContext } from "@/src/context/useAppContext";
-import { useGetUser } from "@/src/hook/RectQuery/useGetUser";
 import { color } from "@/src/styles/color";
 import { Skeleton } from "@/components/ui/skeleton";
 import CardGastos from "@/src/components/dashboard/CardGastosDashboard";
@@ -24,13 +23,11 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 export default function Dashboard() {
-  const { session } = useAppContext();
+  const { user } = useAppContext();
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
-  const { data } = useGetUser(session?.user.id as string);
   const [openDialog, setOpenDialog] = useState(false);
   const [date, setDate] = useState<Date | undefined>(new Date());
 
@@ -38,6 +35,8 @@ export default function Dashboard() {
     new Date(2025, 11, 10), // 10/12/2025
     new Date(2025, 11, 15),
   ];
+
+  console.log(user);
   return (
     <Main>
       <HeaderDashboard />
@@ -46,8 +45,8 @@ export default function Dashboard() {
           className={`text-2xl font-semibold flex gap-2 items-center ${color.textPrimary}`}
         >
           Olá,{" "}
-          {data ? (
-            data.first_name
+          {user ? (
+            user.first_name || user.full_name
           ) : (
             <Skeleton className="h-8 w-50 rounded-md" />
           )}
