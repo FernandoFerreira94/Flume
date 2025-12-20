@@ -15,10 +15,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-
+import { useCreateCategories } from "@/src/hook/useCreateCategories";
+import { useAppContext } from "@/src/context/useAppContext";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
 
 const coresInput = [
   "#ef4444",
@@ -38,22 +40,32 @@ const coresInput = [
 ];
 
 export default function Expense() {
+  const { user } = useAppContext();
+
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string>("#cccccc");
   const [nameCategories, setNameCategories] = useState<string>("");
 
-  function handleColorClick(e: React.FormEvent) {
+  const { mutate, isPending } = useCreateCategories({
+    onSuccess: () => {
+      setOpenDialog(false);
+      setNameCategories("");
+      setSelectedColor("#cccccc");
+    },
+  });
+
+  function handleColorClick(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log("Cor:", selectedColor);
     console.log("Categoria:", nameCategories);
 
-    if (!nameCategories || !selectedColor) {
-      return;
+    if (user) {
+      mutate({
+        name: nameCategories,
+        color: selectedColor,
+        user_id: user.id,
+      });
     }
-
-    setNameCategories("");
-    setSelectedColor(null);
-    setOpenDialog(false);
   }
 
   return (
@@ -78,14 +90,13 @@ export default function Expense() {
       </Section>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogContent>
-          <form onSubmit={handleColorClick} className="space-y-4">
-            <DialogHeader>
-              <DialogTitle>Nova categoria</DialogTitle>
-              <DialogDescription>
-                Crie uma nova categoria de despesa
-              </DialogDescription>
-            </DialogHeader>
-
+          <DialogHeader>
+            <DialogTitle>Nova categoria</DialogTitle>
+            <DialogDescription>
+              Crie uma nova categoria de despesa
+            </DialogDescription>
+          </DialogHeader>
+          <form className="flex flex-col gap-4" onSubmit={handleColorClick}>
             <div>
               <Label htmlFor="nameCategories">Nome</Label>
               <Input
@@ -109,11 +120,11 @@ export default function Expense() {
                       type="button"
                       onClick={() => setSelectedColor(color)}
                       className={cn(
-                        "w-10 h-10 rounded-md transition-all border",
+                        "w-10 h-10 rounded-md transition-all border cursor-pointer",
                         "hover:scale-110",
                         isSelected
-                          ? "border-white border-2 shadow-[0_0_0_2px_rgba(255,255,255,0.6)]"
-                          : "border-gray-500"
+                          ? `border-gray-700 border-2 shadow-[${color}] dark:border-gray-100 scale-120`
+                          : "border-gray-500 "
                       )}
                       style={{ backgroundColor: color }}
                     />
@@ -135,7 +146,7 @@ export default function Expense() {
                 type="submit"
                 disabled={!nameCategories || !selectedColor}
               >
-                Criar
+                {isPending ? <Spinner /> : "Criar"}
               </Button>
             </div>
           </form>
