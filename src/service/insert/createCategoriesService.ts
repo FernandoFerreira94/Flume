@@ -1,6 +1,6 @@
-import { supabaseBrowser } from "../lib/supabase/client";
+import { supabaseBrowser } from "../../lib/supabase/client";
 
-import { CategoriesSchemaProps } from "../lib/zod/categoriesSchema";
+import { CategoriesSchemaProps } from "../../lib/zod/categoriesSchema";
 
 export async function createCategoriesService({
   user_id,

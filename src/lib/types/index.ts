@@ -12,3 +12,11 @@ export interface UserProps {
   session?: Session;
   error?: string;
 }
+
+export interface CategoryProps {
+  id: string;
+  user_id: string;
+  name: string;
+  color: string;
+  created_at: string;
+}

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { fetchUserService } from "@/src/service/fetchUserService";
-import { queryKey } from "./queryKey";
+import { fetchUserService } from "@/src/service/fetch/fetchUserService";
+import { queryKey } from "../KeyQuery/queryKey";
 import { UserSchemaProps } from "@/src/lib/zod/userSchema";
 
 import Cookies from "js-cookie";

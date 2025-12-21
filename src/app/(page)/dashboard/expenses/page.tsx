@@ -9,6 +9,7 @@ export default function Expense() {
       <HeaderExpense
         titulo="Despesas"
         subTitulo="Gerencie seus gastos futuros"
+        serachQuery={true}
       />
       <Section>
         <Button className="w-full items-center  h-12 dark:hover:bg-[#1F2937]">

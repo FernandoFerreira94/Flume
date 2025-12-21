@@ -21,7 +21,7 @@ import { SheetRegister } from "./Register.Sheet";
 import { SingInSchemaType, SingInSchema } from "@/src/lib/zod/signInSchema";
 import { useSignInMutationFn } from "@/src/app/auth/hook/userSingIn";
 import { toast } from "sonner";
-import { loginWithGoogleService } from "@/src/service/loginWithGoogleService";
+import { loginWithGoogleService } from "@/src/service/auth/loginWithGoogleService";
 
 export function LoginSheet() {
   const [showPassword, setShowPassword] = useState(false);

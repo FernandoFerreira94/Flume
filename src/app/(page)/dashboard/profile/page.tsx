@@ -9,7 +9,7 @@ import {
 import { Label } from "@/src/components/ui/label";
 
 import { color } from "@/src/styles/color";
-import { Mail, Calendar, LogOut } from "lucide-react";
+import { Mail, Calendar, LogOut, Cake } from "lucide-react";
 import { useAppContext } from "@/src/context/useAppContext";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { formatDate } from "@/src/actives/formatDate";
@@ -19,13 +19,14 @@ import Cookies from "js-cookie";
 import { supabaseBrowser } from "@/src/lib/supabase/client";
 import { Calendar22 } from "@/src/components/ui/dateBirth";
 import { Section } from "@/src/components/layout/Section";
+import HeaderProfile from "@/src/components/layout/HeaderProfile";
 
 export default function Profile() {
   const { user } = useAppContext();
   const router = useRouter();
   const dateFormatada = formatDate(user?.created_at as string);
   const dataNascimentoFormatada = formatDate(user?.birth_date as string);
-  console.log(user);
+
   async function handleLogout() {
     supabaseBrowser.auth.signOut();
     Cookies.remove("flume-token");
@@ -35,10 +36,14 @@ export default function Profile() {
 
   return (
     <>
+      <HeaderProfile />
       <Section>
         <Card className={`p-4 rounded-lg  ${color.border}`}>
           <CardContent className="flex gap-4 p-0">
-            <Mail size={40} className={`bg-gray-200 p-2.5 rounded-md `} />
+            <Mail
+              size={40}
+              className={`${color.backGroundGradient} text-[#f6f3ed] p-2.5 rounded-md `}
+            />
             <div>
               <Label
                 htmlFor="email"
@@ -55,7 +60,10 @@ export default function Profile() {
           </CardContent>
           <hr />
           <CardContent className="flex gap-4 p-0">
-            <Calendar size={40} className={`bg-gray-200 p-2.5 rounded-md `} />
+            <Calendar
+              size={40}
+              className={`${color.backGroundGradient} text-[#f6f3ed] p-2.5 rounded-md `}
+            />
             <div>
               <Label
                 htmlFor="Membro desde"
@@ -72,7 +80,10 @@ export default function Profile() {
           </CardContent>
           <hr />
           <CardContent className="flex gap-4 p-0">
-            <Calendar size={40} className={`bg-gray-200 p-2.5 rounded-md `} />
+            <Cake
+              size={40}
+              className={`${color.backGroundGradient} text-[#f6f3ed] p-2.5 rounded-md `}
+            />
             <div>
               <Label
                 htmlFor="Data de nascimento"

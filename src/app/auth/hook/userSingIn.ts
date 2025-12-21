@@ -1,6 +1,6 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import type { UserProps } from "@/src/lib/types";
-import { signInService } from "@/src/service/signInService";
+import { signInService } from "@/src/service/auth/signInService";
 import { SingInSchemaType } from "@/src/lib/zod/signInSchema";
 
 export function useSignInMutationFn(

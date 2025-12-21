@@ -5,7 +5,7 @@ import { Session } from "@supabase/supabase-js";
 import { UserSchemaProps } from "../lib/zod/userSchema";
 
 interface AppContextType {
-  isAuthenticated: boolean;
+  isAuthenticated: boolean; 
   loading: boolean;
   session: Session | null;
   user: UserSchemaProps | null;

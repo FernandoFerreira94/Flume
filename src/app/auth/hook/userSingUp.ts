@@ -1,22 +1,15 @@
 import { SignUpSchemaType } from "@/src/lib/zod/signUpSchema";
-import { signUpService } from "@/src/service/signUpService";
+import { signUpService } from "@/src/service/auth/signUpService";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 
-async function signUpMutationFn(data: SignUpSchemaType) {
-  const response = await signUpService(data);
-
-  if (response?.error) {
-    throw new Error(response.error);
-  }
-
-  return response;
-}
-
 export function useSignUp(
-  options?: UseMutationOptions<SignUpSchemaType, Error, SignUpSchemaType>
+  // Definimos 'void' como o primeiro parâmetro do Generic
+  options?: UseMutationOptions<void, Error, SignUpSchemaType>
 ) {
   return useMutation({
-    mutationFn: async (data) => await signUpMutationFn(data),
+    mutationFn: async (data: SignUpSchemaType) => {
+      await signUpService(data);
+    },
     ...options,
   });
 }
