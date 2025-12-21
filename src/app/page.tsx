@@ -1,8 +1,8 @@
-import { Header } from "@/src/components/Header/header";
-import { TextLogin } from "@/src/components/Home/TextHome";
-import { RelatorioLogin } from "@/src/components/Home/RelatorioLogin";
-import { SeccionCard } from "@/src/components/Home/SeccionCard";
-import { Footer } from "../components/Footer/Footer";
+import { Header } from "@/src/components/layout/header";
+import { TextLogin } from "@/src/components/layout/TextHome";
+import { RelatorioLogin } from "@/src/components/layout/RelatorioLogin";
+import { SeccionCard } from "@/src/components/layout/SeccionCard";
+import { Footer } from "../components/layout/Footer";
 import { color } from "../styles/color";
 export default function Login() {
   return (
