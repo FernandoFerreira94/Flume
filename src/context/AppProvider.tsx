@@ -3,9 +3,9 @@
 import { ReactNode, useEffect, useState } from "react";
 import { AppContext } from "./AppContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { supabaseBrowser } from "@/src/lib/supabase/client";
+import { supabaseBrowser } from "@/lib/supabase/client";
 import type { Session } from "@supabase/supabase-js";
-import { UserSchemaProps } from "../lib/zod/userSchema";
+import { UserSchemaProps } from "../../lib/zod/userSchema";
 
 interface AppProviderProps {
   children: ReactNode;

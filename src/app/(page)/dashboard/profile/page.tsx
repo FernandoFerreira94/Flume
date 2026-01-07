@@ -5,21 +5,21 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/src/components/ui/card";
-import { Label } from "@/src/components/ui/label";
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
 import { color } from "@/src/styles/color";
 import { Mail, Calendar, LogOut, Cake } from "lucide-react";
 import { useAppContext } from "@/src/context/useAppContext";
-import { Skeleton } from "@/src/components/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/src/actives/formatDate";
-import { Button } from "@/src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { supabaseBrowser } from "@/src/lib/supabase/client";
-import { Calendar22 } from "@/src/components/ui/dateBirth";
-import { Section } from "@/src/components/layout/Section";
-import HeaderProfile from "@/src/components/layout/HeaderProfile";
+import { supabaseBrowser } from "@/lib/supabase/client";
+import { Calendar22 } from "@/components/ui/dateBirth";
+import { Section } from "@/components/layout/Section";
+import HeaderProfile from "@/components/layout/HeaderProfile";
 
 export default function Profile() {
   const { user } = useAppContext();

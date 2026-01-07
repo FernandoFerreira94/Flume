@@ -11,19 +11,19 @@ import {
   SheetTitle,
   SheetTrigger,
   SheetDescription,
-} from "@/src/components/ui/sheet";
-import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
-import { Label } from "@/src/components/ui/label";
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { LoginSheet } from "./Login.Sheet";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Spinner } from "@/src/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { useSignUp } from "@/src/app/auth/hook/userSingUp";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { SignUpSchemaType, SignUpSchema } from "@/src/lib/zod/signUpSchema";
-import { Calendar22 } from "../../../components/ui/dateBirth";
+import { SignUpSchemaType, SignUpSchema } from "@/lib/zod/signUpSchema";
+import { Calendar22 } from "@/components/ui/dateBirth";
 import { Controller } from "react-hook-form";
 
 interface SheetRegisterProps {
@@ -120,6 +120,7 @@ export function SheetRegister({ titulo }: SheetRegisterProps) {
               name="birth_date"
               render={({ field }) => (
                 <Calendar22
+                  title="Data de nascimento"
                   value={field.value ? new Date(field.value) : undefined}
                   onChange={(date) => {
                     // sempre envie YYYY-MM-DD

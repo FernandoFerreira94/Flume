@@ -1,7 +1,7 @@
 "use client";
-import { HeaderExpense } from "@/src/components/layout/HeaderExpense";
-import CardReports from "@/src/components/layout/CardReposts";
-import { Section } from "@/src/components/layout/Section";
+import { HeaderExpense } from "@/components/layout/HeaderExpense";
+import CardReports from "@/components/layout/CardReposts";
+import { Section } from "@/components/layout/Section";
 
 export default function Reports() {
   return (

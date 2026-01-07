@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { color } from "@/src/styles/color";
 import { Plus } from "lucide-react";
 import { FolderKanban, SquarePen, Trash } from "lucide-react";
@@ -9,19 +9,24 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/src/components/ui/dialog";
+} from "@/components/ui/dialog";
 import { useState } from "react";
 import { useCreateCategories } from "@/src/hook/insert/useCreateCategories";
 import { useAppContext } from "@/src/context/useAppContext";
-import { Input } from "@/src/components/ui/input";
-import { Label } from "@/src/components/ui/label";
-import { cn } from "@/src/lib/utils";
-import { Spinner } from "@/src/components/ui/spinner";
-import { Section } from "@/src/components/layout/Section";
-import { HeaderExpense } from "@/src/components/layout/HeaderExpense";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
+import { Section } from "@/components/layout/Section";
+import { HeaderExpense } from "@/components/layout/HeaderExpense";
 import { useFetchCategories } from "@/src/hook/fetch/useFetchCategories";
-import { Card, CardHeader } from "@/src/components/ui/card";
-import { CategoryProps } from "@/src/lib/types";
+import { Card, CardHeader } from "@/components/ui/card";
+import { CategoryProps } from "@/lib/types";
+import { useUpdateCategory } from "@/src/hook/update/useUpdateCategory";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
+import { queryKey } from "@/src/hook/KeyQuery/queryKey";
+import { useDeleteCategory } from "@/src/hook/delete/useDeleteCategory";
 
 const coresInput = [
   "#ef4444",
@@ -48,19 +53,51 @@ export default function Categories() {
   const [editingCategory, setEditingCategory] = useState<CategoryProps | null>(
     null
   );
-  // Insert Categories
+  // Query Key
+  const queryClient = useQueryClient();
+
+  //
   const { mutate, isPending } = useCreateCategories({
     onSuccess: () => {
       setOpenDialog(false);
-      setNameCategories("");
-      setSelectedColor("#cccccc");
+      queryClient.invalidateQueries({
+        queryKey: queryKey.categories(user?.id as string),
+      });
+      toast.success("Categoria criada com sucesso!");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const { mutate: mutateUpdate, isPending: isPendingUpdate } =
+    useUpdateCategory({
+      onSuccess: () => {
+        setEditingCategory(null);
+        queryClient.invalidateQueries({
+          queryKey: queryKey.categories(user?.id as string),
+        });
+        toast.success("Categoria atualizada com sucesso!");
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+
+  const { mutate: mutateDelete } = useDeleteCategory({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKey.categories(user?.id as string),
+      });
+      toast.success("Categoria excluida com sucesso!");
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 
   function handleColorClick(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log("Cor:", selectedColor);
-    console.log("Categoria:", nameCategories);
 
     if (user) {
       mutate({
@@ -91,6 +128,27 @@ export default function Categories() {
 
   console.log(categories);
 
+  function handleEditCategory(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (editingCategory && user) {
+      mutateUpdate({
+        id: editingCategory.id,
+        name: nameCategories,
+        color: selectedColor,
+        user_id: user.id,
+      });
+    }
+  }
+
+  function handleDeleteCategory(id: string) {
+    if (user) {
+      mutateDelete({
+        id: id,
+      });
+    }
+  }
+
   return (
     <>
       <HeaderExpense titulo="Categorias" />
@@ -119,7 +177,7 @@ export default function Categories() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-x-18 gap-y-8 pt-8 w-full">
+          <div className="grid grid-cols-3 gap-x-8 gap-y-8 pt-8 w-full">
             {categories?.map((category) => (
               <Card key={category.id} className="mt-0 w-full px-0 py-4 grid">
                 <CardHeader className="flex gap-4 justify-between items-center">
@@ -137,10 +195,11 @@ export default function Categories() {
                   <div className={`flex items-center gap-2  } `}>
                     <SquarePen
                       size={28}
-                      className={`transition ${color.textMuted} duration-300 ease-in-out border-2 border-transparent p-1 rounded-sm hover:border-[#6B7280]/80 cursor-pointer`}
+                      className={`transition ${color.textMuted} duration-300 ease-in-out  border-transparent p-1 rounded-sm hover:border-[#6B7280]/80 cursor-pointer`}
                       onClick={() => handleOpenEdit(category)}
                     />
                     <Trash
+                      onClick={() => handleDeleteCategory(category.id)}
                       size={28}
                       className={`transition text-red-400 duration-300 ease-in-out border-2 border-transparent p-1 rounded-sm hover:border-red-400 cursor-pointer`}
                     />
@@ -225,10 +284,7 @@ export default function Categories() {
               <DialogTitle>Editar Categoria</DialogTitle>
               <DialogDescription>Edite o nome e cor</DialogDescription>
             </DialogHeader>
-            <form
-              className="flex flex-col gap-4"
-              onSubmit={() => alert("Editado com sucesso")}
-            >
+            <form className="flex flex-col gap-4" onSubmit={handleEditCategory}>
               <div>
                 <Label htmlFor="editName">Nome</Label>
                 <Input
@@ -267,7 +323,9 @@ export default function Categories() {
                 >
                   Cancelar
                 </Button>
-                <Button type="submit">Salvar Alterações</Button>
+                <Button type="submit" disabled={isPendingUpdate}>
+                  {isPendingUpdate ? <Spinner /> : "Salvar"}
+                </Button>
               </div>
             </form>
           </DialogContent>

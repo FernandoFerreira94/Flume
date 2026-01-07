@@ -1,6 +1,6 @@
-import { supabaseBrowser } from "../../lib/supabase/client";
+import { supabaseBrowser } from "../../../lib/supabase/client";
 
-import { SignUpSchemaType } from "../../lib/zod/signUpSchema";
+import { SignUpSchemaType } from "../../../lib/zod/signUpSchema";
 
 export async function signUpService({
   email,

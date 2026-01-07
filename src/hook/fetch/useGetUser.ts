@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 
 import { fetchUserService } from "@/src/service/fetch/fetchUserService";
 import { queryKey } from "../KeyQuery/queryKey";
-import { UserSchemaProps } from "@/src/lib/zod/userSchema";
+import { UserSchemaProps } from "@/lib/zod/userSchema";
 
 import Cookies from "js-cookie";
-import { supabaseBrowser } from "@/src/lib/supabase/client";
+import { supabaseBrowser } from "@/lib/supabase/client";
 
 import { redirect } from "next/navigation";
 

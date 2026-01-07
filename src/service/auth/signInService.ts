@@ -1,7 +1,7 @@
 // service/signInService.ts
 
-import { supabaseBrowser } from "@/src/lib/supabase/client";
-import { SingInSchemaType } from "@/src/lib/zod/signInSchema";
+import { supabaseBrowser } from "@/lib/supabase/client";
+import { SingInSchemaType } from "@/lib/zod/signInSchema";
 
 export async function signInService({ email, password }: SingInSchemaType) {
   try {

@@ -1,6 +1,6 @@
-import { supabaseBrowser } from "../../lib/supabase/client";
+import { supabaseBrowser } from "../../../lib/supabase/client";
 
-import { UserSchema, UserSchemaProps } from "../../lib/zod/userSchema";
+import { UserSchema, UserSchemaProps } from "../../../lib/zod/userSchema";
 
 export async function fetchUserService(
   userId: string

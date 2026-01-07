@@ -1,6 +1,6 @@
 "use client";
-import { Section } from "@/src/components/layout/Section";
-import { SideBar } from "@/src/components/layout/sideBar";
+import { Section } from "@/components/layout/Section";
+import { SideBar } from "@/components/layout/sideBar";
 import { color } from "@/src/styles/color";
 
 export default function DashboardLayout({

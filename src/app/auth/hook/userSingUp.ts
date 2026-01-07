@@ -1,4 +1,4 @@
-import { SignUpSchemaType } from "@/src/lib/zod/signUpSchema";
+import { SignUpSchemaType } from "@/lib/zod/signUpSchema";
 import { signUpService } from "@/src/service/auth/signUpService";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 

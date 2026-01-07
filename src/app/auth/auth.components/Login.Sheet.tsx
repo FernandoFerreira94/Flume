@@ -9,16 +9,16 @@ import {
   SheetTitle,
   SheetTrigger,
   SheetDescription,
-} from "@/src/components/ui/sheet";
-import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
-import { Label } from "@/src/components/ui/label";
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form"; // 1. Importar useForm
 import { zodResolver } from "@hookform/resolvers/zod"; // 2. Importar o resolver do Zod
-import { Spinner } from "@/src/components/ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { SheetRegister } from "./Register.Sheet";
-import { SingInSchemaType, SingInSchema } from "@/src/lib/zod/signInSchema";
+import { SingInSchemaType, SingInSchema } from "@/lib/zod/signInSchema";
 import { useSignInMutationFn } from "@/src/app/auth/hook/userSingIn";
 import { toast } from "sonner";
 import { loginWithGoogleService } from "@/src/service/auth/loginWithGoogleService";

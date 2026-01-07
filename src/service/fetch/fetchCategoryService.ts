@@ -1,6 +1,6 @@
-import { supabaseBrowser } from "@/src/lib/supabase/client";
+import { supabaseBrowser } from "@/lib/supabase/client";
 
-import type { CategoryProps } from "@/src/lib/types";
+import type { CategoryProps } from "@/lib/types";
 
 export async function fetchCategoryService(userId: string) {
   const { data: categoryData, error: categoryError } = await supabaseBrowser

@@ -1,6 +1,5 @@
 export const color = {
   backGroundGradient: " bg-[#374151]  dark:bg-[#374151] ",
-  backGroundGradientDark: "",
   background: "bg-[#F6F3ED] dark:bg-[#1B1D25]", // fundo principal
   surface: "bg-[#FFFFFF] dark:bg-[#242731]", // cards, modais
   surfaceAlt: "bg-[#EEEAE2] dark:bg-[#222222]",

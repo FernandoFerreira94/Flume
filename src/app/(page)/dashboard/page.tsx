@@ -3,26 +3,26 @@
 import { useState } from "react";
 import { useAppContext } from "@/src/context/useAppContext";
 import { color } from "@/src/styles/color";
-import { Skeleton } from "@/src/components/ui/skeleton";
-import CardGastos from "@/src/components/layout/CardGastosDashboard";
+import { Skeleton } from "@/components/ui/skeleton";
+import CardGastos from "@/components/layout/CardGastosDashboard";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/src/components/ui/card";
-import { GraficoPizza } from "@/src/components/layout/GraficoPizza";
-import { Calendar } from "@/src/components/ui/calendar";
+} from "@/components/ui/card";
+import { GraficoPizza } from "@/components/layout/GraficoPizza";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/src/components/ui/dialog";
-import { Section } from "@/src/components/layout/Section";
-import { HeaderDashboard } from "@/src/components/layout/HeaderDashboard";
+} from "@/components/ui/dialog";
+import { Section } from "@/components/layout/Section";
+import { HeaderDashboard } from "@/components/layout/HeaderDashboard";
 
 export default function Dashboard() {
   const { user } = useAppContext();
