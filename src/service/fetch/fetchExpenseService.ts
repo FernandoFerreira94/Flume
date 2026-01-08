@@ -2,16 +2,15 @@ import { supabaseBrowser } from "@/lib/supabase/client";
 
 import type { ExpenseProps } from "@/lib/types";
 
-export async function CreateExpenseService(data: ExpenseProps) {
+export async function fetchExpenseService(user_id: string) {
   const { data: expense, error } = await supabaseBrowser
     .from("expenses")
-    .insert(data)
-    .select()
-    .single();
+    .select("*")
+    .eq("user_id", user_id);
 
   if (error) {
-    throw new Error("Erro ao criar despesa: " + error.message);
+    throw new Error("Erro ao buscar despesas: " + error.message);
   }
 
-  return expense;
+  return expense as ExpenseProps[];
 }

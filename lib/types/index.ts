@@ -20,3 +20,15 @@ export interface CategoryProps {
   color: string;
   created_at: string;
 }
+
+export interface ExpenseProps {
+  name: string;
+  value: number;
+  type: "fixed" | "installment" | "single";
+  category_id: string;
+  installments_count?: number;
+  description?: string;
+  due_date: string;
+  user_id: string;
+  id: string;
+}

@@ -279,7 +279,7 @@ export default function Categories() {
           open={!!editingCategory} // Abre se houver uma categoria selecionada
           onOpenChange={(open) => !open && handleCloseEdit()}
         >
-          <DialogContent>
+          <DialogContent className="dark:bg-[#1B1D25]">
             <DialogHeader>
               <DialogTitle>Editar Categoria</DialogTitle>
               <DialogDescription>Edite o nome e cor</DialogDescription>

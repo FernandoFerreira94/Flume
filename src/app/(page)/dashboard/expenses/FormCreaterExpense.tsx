@@ -39,14 +39,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateExpense } from "@/src/hook/insert/useCreateExpense";
 import { toast } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
 
 const schemaExpense = z
   .object({
     name: z.string().min(1, "Informe o nome da despesa"),
-    value: z.number().int().nonnegative().min(1, "Informe o valor da despesa"),
+    value: z.number().int().nonnegative().min(0, "Informe o valor da despesa"),
     type: z.enum(["fixed", "installment"]),
     category_id: z.string().min(1, "Selecione uma categoria"),
-    installment_count: z
+    installments_count: z
       .number("Informe o número de parcelas")
       .int()
       .min(1)
@@ -55,10 +56,10 @@ const schemaExpense = z
     due_date: z.string("Informe a data de vencimento"),
   })
   .refine(
-    (data) => data.type === "fixed" || data.installment_count !== undefined,
+    (data) => data.type === "fixed" || data.installments_count !== undefined,
     {
       message: "Informe o número de parcelas",
-      path: ["installment_count"],
+      path: ["installments_count"],
     }
   );
 
@@ -100,12 +101,13 @@ export default function FormCreateExpense() {
   );
   const selectedType = watch("type");
 
-  function onSubmit(data: SchemaExpenseType) {
+  async function onSubmit(data: SchemaExpenseType) {
     console.log("Dados enviados:", data);
-    mutate({
+    await mutate({
       ...data,
       user_id: user?.id as string,
     });
+
     setOpenDialog(false);
     reset();
   }
@@ -132,7 +134,11 @@ export default function FormCreateExpense() {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] dark:bg-[#1B1D25] font-normal">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit(onSubmit, (errors) => {
+            console.error("ERROS DO FORMULÁRIO:", errors);
+          })}
+        >
           <DialogHeader>
             <DialogTitle>Nova despesa</DialogTitle>
             <DialogDescription>Criar uma despesa nova</DialogDescription>
@@ -215,13 +221,13 @@ export default function FormCreateExpense() {
                 <Input
                   type="number"
                   placeholder="Ex: 12"
-                  {...register("installment_count", {
+                  {...register("installments_count", {
                     valueAsNumber: true,
                   })}
                 />
-                {errors.installment_count && (
+                {errors.installments_count && (
                   <span className="text-red-500 text-xs">
-                    {errors.installment_count.message}
+                    {errors.installments_count.message}
                   </span>
                 )}
               </div>
@@ -301,11 +307,22 @@ export default function FormCreateExpense() {
                   render={({ field }) => (
                     <Calendar22
                       title="Vencimento"
-                      value={field.value ? new Date(field.value) : undefined}
+                      value={
+                        field.value
+                          ? new Date(`${field.value}T12:00:00`)
+                          : undefined
+                      }
                       onChange={(date) => {
-                        field.onChange(
-                          date ? date.toISOString().split("T")[0] : undefined
-                        );
+                        if (!date) {
+                          field.onChange(undefined);
+                          return;
+                        }
+
+                        const yyyy = date.getFullYear();
+                        const mm = String(date.getMonth() + 1).padStart(2, "0");
+                        const dd = String(date.getDate()).padStart(2, "0");
+
+                        field.onChange(`${yyyy}-${mm}-${dd}`);
                       }}
                     />
                   )}
@@ -337,8 +354,12 @@ export default function FormCreateExpense() {
                 Cancel
               </Button>
             </DialogClose>
-            <Button type="submit" className="w-full h-10 dark:bg-[#2C3346]">
-              Criar
+            <Button
+              disabled={isPending}
+              type="submit"
+              className="w-full h-10 dark:bg-[#2C3346]"
+            >
+              {isPending ? <Spinner /> : "Criando"}
             </Button>
           </DialogFooter>
         </form>

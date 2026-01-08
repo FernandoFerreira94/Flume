@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
+import Image from "next/image";
+import { useAppContext } from "@/src/context/useAppContext";
 
 const navItems = [
   { name: "Home", href: "/dashboard", icon: Home },
@@ -23,6 +25,7 @@ const navItems = [
 ];
 
 export function SideBar() {
+  const { user } = useAppContext();
   const pathname = usePathname();
 
   return (
@@ -78,24 +81,30 @@ export function SideBar() {
           </ul>
 
           <ul
-            className={`flex flex-col gap-1 px-3 py-2 border-t ${color.border} ${color.border}`}
+            className={`flex flex-col gap-2 px-3 py-4 border-t ${color.border} ${color.border}`}
           >
+            <li
+              className={`flex gap-2 items-center  rounded-md cursor-pointer  dark:hover:bg-[#1B1D25] `}
+            >
+              <Link
+                href="/dashboard/profile"
+                className={`flex gap-2 items-center rounded-md cursor-pointer  dark:hover:bg-[#1B1D25] `}
+              >
+                <Image
+                  src={user?.avatar_url as string}
+                  alt="Avatar"
+                  width={100}
+                  height={100}
+                  className="w-8 h-8 rounded-full ml-2"
+                />
+              </Link>
+            </li>
             <li
               className={`flex gap-2 items-center rounded-md cursor-pointer hover:bg-[#F6F3ED] dark:hover:bg-[#1B1D25] `}
             >
               <AnimatedThemeToggler
                 className={` flex gap-2 text-sm font-light  items-center px-3 py-2.5  cursor-pointer w-full  }`}
               />{" "}
-            </li>
-            <li
-              className={`flex gap-2 items-center px-3 py-2.5 rounded-md cursor-pointer hover:bg-[#F6F3ED] dark:hover:bg-[#1B1D25] mb-2`}
-            >
-              <Globe size={18} className={color.textPrimary} />
-              <span
-                className={`text-sm font-semibold tracking-wider ${color.textPrimary}`}
-              >
-                PT
-              </span>
             </li>
           </ul>
         </nav>
