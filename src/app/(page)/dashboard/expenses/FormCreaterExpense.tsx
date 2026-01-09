@@ -1,6 +1,4 @@
-"use client";
 import { Button } from "@/components/ui/button";
-
 import { ChevronsUpDown, Plus } from "lucide-react";
 import { useState } from "react";
 import {
@@ -37,15 +35,20 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateExpense } from "@/src/hook/insert/useCreateExpense";
+import { useCreateSingleExpense } from "@/src/hook/insert/expense/useCreateSingleExpense";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
+import { queryKey } from "@/src/hook/KeyQuery/queryKey";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCreateInstallmentExpense } from "@/src/hook/insert/expense/useCreateInstallmentExpense";
+import { useCreateFixedExpense } from "@/src/hook/insert/expense/useCreateFixedExpense";
 
+// SCHEMA EXPENSE
 const schemaExpense = z
   .object({
     name: z.string().min(1, "Informe o nome da despesa"),
     value: z.number().int().nonnegative().min(0, "Informe o valor da despesa"),
-    type: z.enum(["fixed", "installment"]),
+    expense_type: z.enum(["single", "fixed", "installment"]),
     category_id: z.string().min(1, "Selecione uma categoria"),
     installments_count: z
       .number("Informe o número de parcelas")
@@ -53,10 +56,12 @@ const schemaExpense = z
       .min(1)
       .optional(),
     description: z.string().optional(),
-    due_date: z.string("Informe a data de vencimento"),
+    first_due_date: z.string("Informe a data de vencimento"),
   })
   .refine(
-    (data) => data.type === "fixed" || data.installments_count !== undefined,
+    (data) =>
+      data.expense_type !== "installment" ||
+      (data.installments_count !== undefined && data.installments_count > 1),
     {
       message: "Informe o número de parcelas",
       path: ["installments_count"],
@@ -70,16 +75,69 @@ export default function FormCreateExpense() {
   const [openDialog, setOpenDialog] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const { mutate, isPending } = useCreateExpense({
-    onSuccess: () => {
-      toast.success("Despesa criada com sucesso!");
-    },
-    onError: (error) => {
-      toast.error(error.message);
-      console.log(error);
-    },
-  });
+  // FETCH EXPENSE
+  const { data: categories } = useFetchCategories(user?.id as string);
 
+  // KEY QUERY
+  const queryClient = useQueryClient();
+  const invalidadeExpense = () =>
+    queryClient.invalidateQueries({
+      queryKey: queryKey.expense(user?.id as string),
+    });
+
+  // INSERT
+  // MUTATE SINGLE
+  const { mutate: mutateSingle, isPending: isPendingSingle } =
+    useCreateSingleExpense({
+      onSuccess: () => {
+        invalidadeExpense();
+        toast.success("Despesa criada com sucesso!");
+
+        setOpenDialog(false);
+        reset();
+      },
+      onError: (error) => {
+        toast.error(error.message);
+        console.log(error);
+      },
+    });
+
+  // MUTATE INSTALLMENT
+  const { mutate: mutateInstallments, isPending: isPendingInstallments } =
+    useCreateInstallmentExpense({
+      onSuccess: () => {
+        invalidadeExpense();
+        toast.success("Despesa criada com sucesso!");
+
+        setOpenDialog(false);
+        reset();
+      },
+      onError: (error) => {
+        toast.error(error.message);
+        console.log(error);
+      },
+    });
+
+  // MUTATE FIXED
+  const { mutate: mutateFixed, isPending: isPendingFixed } =
+    useCreateFixedExpense({
+      onSuccess: () => {
+        invalidadeExpense();
+        toast.success("Despesa criada com sucesso!");
+
+        setOpenDialog(false);
+        reset();
+      },
+      onError: (error) => {
+        toast.error(error.message);
+        console.log(error);
+      },
+    });
+
+  // LOADING
+  const disabled = isPendingSingle || isPendingInstallments;
+
+  // USEFORM
   const {
     register,
     handleSubmit,
@@ -92,24 +150,51 @@ export default function FormCreateExpense() {
     resolver: zodResolver(schemaExpense),
     defaultValues: {
       category_id: "", // Inicialize o valor
-      type: "fixed",
+      expense_type: "single",
     },
   });
-  const { data: categories } = useFetchCategories(user?.id as string);
+
   const categoriaSelecionada = categories?.find(
     (c) => c.id === watch("category_id")
   );
-  const selectedType = watch("type");
+  const selectedType = watch("expense_type");
 
+  // FUNCAO DE SUBMISSAO
   async function onSubmit(data: SchemaExpenseType) {
-    console.log("Dados enviados:", data);
-    await mutate({
-      ...data,
+    const basePayload = {
       user_id: user?.id as string,
-    });
+      name: data.name,
+      description: data.description,
+      category_id: data.category_id,
+      value: data.value,
+      first_due_date: data.first_due_date,
+    };
 
-    setOpenDialog(false);
-    reset();
+    // INSTALLMENT
+    if (data.expense_type === "installment") {
+      mutateInstallments({
+        ...basePayload,
+        expense_type: "installment",
+        installments_count: data.installments_count!,
+      });
+      return;
+    }
+
+    if (data.expense_type === "fixed") {
+      mutateFixed({
+        ...basePayload,
+        expense_type: "fixed",
+      });
+      return;
+    }
+
+    // SINGLE ou FIXED
+    mutateSingle({
+      ...basePayload,
+      expense_type: data.expense_type,
+      installments_count: 1,
+      total_value: data.value,
+    });
   }
 
   return (
@@ -125,12 +210,19 @@ export default function FormCreateExpense() {
     >
       <DialogTrigger asChild>
         <Button
+          disabled={disabled}
           className="w-full items-center  h-12 dark:hover:bg-[#1F2937] bg-[#374151]"
           onClick={() => setOpenDialog(true)}
         >
-          {" "}
-          <Plus />
-          Criar despesas
+          {disabled ? (
+            <Spinner />
+          ) : (
+            <>
+              {" "}
+              <Plus />
+              Criar despesas
+            </>
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] dark:bg-[#1B1D25] font-normal">
@@ -158,8 +250,50 @@ export default function FormCreateExpense() {
                 </span>
               )}
             </div>
+
+            <div className="grid gap-2">
+              <Label>Tipo</Label>
+              <div className="grid grid-cols-3 gap-4">
+                <Button
+                  className={` ${
+                    selectedType === "single"
+                      ? "dark:bg-[#2C3346]"
+                      : "bg-[#F6F3ED] text-gray-800 hover:bg-[#F6F3ED] border border-gray-800/80 dark:bg-[#222222] dark:text-gray-200  dark:hover:bg-neutral-800"
+                  }`}
+                  type="button"
+                  onClick={() => setValue("expense_type", "single")}
+                >
+                  Unica
+                </Button>
+                <Button
+                  className={` ${
+                    selectedType === "fixed"
+                      ? "dark:bg-[#2C3346]"
+                      : "bg-[#F6F3ED] text-gray-800 hover:bg-[#F6F3ED] border border-gray-800/80 dark:bg-[#222222] dark:text-gray-200  dark:hover:bg-neutral-800"
+                  }`}
+                  type="button"
+                  onClick={() => setValue("expense_type", "fixed")}
+                >
+                  Fixa
+                </Button>
+                <Button
+                  className={` ${
+                    selectedType === "installment"
+                      ? "dark:bg-[#2C3346]"
+                      : "bg-[#F6F3ED] text-gray-800 hover:bg-[#F6F3ED] border border-gray-800/80 dark:bg-[#222222] dark:text-gray-200  dark:hover:bg-neutral-800"
+                  }`}
+                  type="button"
+                  onClick={() => setValue("expense_type", "installment")}
+                >
+                  Parcelada
+                </Button>
+              </div>
+            </div>
+
             <div className="grid gap-1 relative">
-              <Label htmlFor="value">Valor</Label>
+              <Label htmlFor="value">
+                {selectedType === "installment" ? "Valor da parcela" : "Valor"}
+              </Label>
               <Controller
                 name="value"
                 control={control}
@@ -184,34 +318,6 @@ export default function FormCreateExpense() {
                   {errors.value.message}
                 </span>
               )}
-            </div>
-
-            <div className="grid gap-2">
-              <Label>Tipo</Label>
-              <div className="grid grid-cols-2 gap-4">
-                <Button
-                  className={` ${
-                    selectedType === "fixed"
-                      ? "dark:bg-[#2C3346]"
-                      : "bg-[#F6F3ED] text-gray-800 hover:bg-[#F6F3ED] border border-gray-800/80 dark:bg-[#222222] dark:text-gray-200  dark:hover:bg-neutral-800"
-                  }`}
-                  type="button"
-                  onClick={() => setValue("type", "fixed")}
-                >
-                  Fixa
-                </Button>
-                <Button
-                  className={` ${
-                    selectedType === "installment"
-                      ? "dark:bg-[#2C3346]"
-                      : "bg-[#F6F3ED] text-gray-800 hover:bg-[#F6F3ED] border border-gray-800/80 dark:bg-[#222222] dark:text-gray-200  dark:hover:bg-neutral-800"
-                  }`}
-                  type="button"
-                  onClick={() => setValue("type", "installment")}
-                >
-                  Parcelada
-                </Button>
-              </div>
             </div>
 
             {/* PARCELAS */}
@@ -269,13 +375,11 @@ export default function FormCreateExpense() {
                             <CommandItem
                               key={item.id}
                               value={item.name}
-                              onSelect={(currentValue) => {
+                              onSelect={() => {
                                 setValue("category_id", item.id, {
                                   shouldValidate: true,
                                 });
                                 setOpen(false);
-                                console.log(currentValue);
-                                //  setValue("category_id_id", item.id);
                               }}
                             >
                               <article className="flex justify-between w-full items-center">
@@ -302,7 +406,7 @@ export default function FormCreateExpense() {
 
               <div>
                 <Controller
-                  name="due_date"
+                  name="first_due_date"
                   control={control}
                   render={({ field }) => (
                     <Calendar22
@@ -327,9 +431,9 @@ export default function FormCreateExpense() {
                     />
                   )}
                 />
-                {errors.due_date && (
+                {errors.first_due_date && (
                   <span className="text-red-500 text-xs">
-                    {errors.due_date.message}
+                    {errors.first_due_date.message}
                   </span>
                 )}
               </div>
@@ -355,11 +459,11 @@ export default function FormCreateExpense() {
               </Button>
             </DialogClose>
             <Button
-              disabled={isPending}
+              disabled={isPendingSingle}
               type="submit"
               className="w-full h-10 dark:bg-[#2C3346]"
             >
-              {isPending ? <Spinner /> : "Criando"}
+              {disabled ? <Spinner /> : "Criando"}
             </Button>
           </DialogFooter>
         </form>

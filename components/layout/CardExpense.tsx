@@ -1,21 +1,16 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
-
-interface CardExpenseProps {
-  name: string;
-  value: string;
-  type: string;
-  due_date: string;
-}
-
-export default function CardExpense({
-  name,
-  value,
-  type,
-  due_date,
-}: CardExpenseProps) {
+import { convertValue } from "@/src/actives/convertValue";
+import { ExpenseProps } from "@/lib/types";
+import { formatDate } from "@/src/actives/formatDate";
+import { isOverdue } from "@/src/actives/isOverdue";
+export default function CardExpense({ data }: { data: ExpenseProps }) {
   const [checked, setChecked] = useState(false);
+  console.log(data);
+
+  const isOverdueExpense = isOverdue(data.first_due_date as string);
+
   return (
     <section
       className="w-full border py-4 px-4 bg-white rounded-lg border-gray-400/60 flex gap-2 hover:shadow-lg transition duration-300 ease-in-out 
@@ -37,7 +32,7 @@ export default function CardExpense({
                 checked && "line-through text-neutral-500"
               } `}
             >
-              {name}
+              {data.name}
             </span>
           </div>
           <div className="flex items-center gap-4">
@@ -48,15 +43,23 @@ export default function CardExpense({
                 </span>
               </>
             )}
-            <p className="font-semibold text-sm">{value}</p>
+            <p className="font-semibold text-sm">{convertValue(data.value)}</p>
           </div>
         </div>
-        <div className="flex w-full items-center gap-8 ">
-          <p className="text-xs text-neutral-600 dark:text-gray-200/80">
-            {due_date}
+        <div className="flex w-full items-center gap-4 ">
+          <p
+            className={`text-xs ${
+              isOverdueExpense
+                ? "text-red-600 dark:text-red-200/80"
+                : "text-neutral-600 dark:text-gray-200/80"
+            }`}
+          >
+            {formatDate(data.first_due_date as string)}
           </p>
           <p className="text-xs text-gray-600/80 font-medium bg-gray-200/60 px-2 py-1 rounded-sm dark:bg-[#2E344A] dark:text-gray-200/60 ">
-            {type}
+            {data.expense_type === "installment"
+              ? `${data.installments?.installment_number} / ${data.installments_count}`
+              : data.expense_type}
           </p>
         </div>
       </div>

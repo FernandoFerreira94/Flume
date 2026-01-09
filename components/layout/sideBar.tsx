@@ -1,19 +1,10 @@
-import { color } from "@/src/styles/color";
+import Image from "next/image";
 import { PiChartLineUp } from "react-icons/pi";
+import { color } from "@/src/styles/color";
 import { usePathname } from "next/navigation";
-import {
-  Home,
-  Receipt,
-  FolderKanban,
-  BarChart3,
-  User,
-  Sun,
-  Moon,
-  Globe,
-} from "lucide-react";
+import { Home, Receipt, FolderKanban, BarChart3, User } from "lucide-react";
 import Link from "next/link";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
-import Image from "next/image";
 import { useAppContext } from "@/src/context/useAppContext";
 
 const navItems = [
@@ -90,13 +81,19 @@ export function SideBar() {
                 href="/dashboard/profile"
                 className={`flex gap-2 items-center rounded-md cursor-pointer  dark:hover:bg-[#1B1D25] `}
               >
-                <Image
-                  src={user?.avatar_url as string}
-                  alt="Avatar"
-                  width={100}
-                  height={100}
-                  className="w-8 h-8 rounded-full ml-2"
-                />
+                {user?.avatar_url ? (
+                  <Image
+                    src={user.avatar_url}
+                    alt="Avatar"
+                    width={100}
+                    height={100}
+                    className="w-8 h-8 rounded-full ml-2"
+                  />
+                ) : (
+                  <div className="w-8 h-8 rounded-full ml-2 bg-gray-200 flex items-center justify-center">
+                    <User size={16} /> {/* Ícone de fallback do Lucide */}
+                  </div>
+                )}
               </Link>
             </li>
             <li

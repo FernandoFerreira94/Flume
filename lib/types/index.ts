@@ -24,11 +24,29 @@ export interface CategoryProps {
 export interface ExpenseProps {
   name: string;
   value: number;
-  type: "fixed" | "installment" | "single";
+  expense_type: "fixed" | "installment" | "single";
   category_id: string;
   installments_count?: number;
   description?: string;
-  due_date: string;
+  first_due_date?: string;
   user_id: string;
+  id?: string;
+  total_value?: number;
+  active?: boolean;
+  installments?: InstallmentProps[];
+}
+
+export interface InstallmentExpenseProps extends ExpenseProps {
+  expense_type: "installment";
+  installments_count: number;
+}
+
+export interface InstallmentProps {
   id: string;
+  expense_id: string;
+  installment_number: number;
+  due_date: string;
+  value: number;
+  paid: boolean;
+  paid_at?: string;
 }
