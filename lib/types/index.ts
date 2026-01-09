@@ -43,10 +43,18 @@ export interface InstallmentExpenseProps extends ExpenseProps {
 
 export interface InstallmentProps {
   id: string;
-  expense_id: string;
   installment_number: number;
   due_date: string;
   value: number;
   paid: boolean;
+
   paid_at?: string;
+  expense: {
+    id: string;
+    name: string;
+    expense_type: string;
+    user_id: string;
+    first_due_date: string;
+    installments_count: number;
+  };
 }

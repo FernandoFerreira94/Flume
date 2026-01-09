@@ -5,11 +5,27 @@ import { convertValue } from "@/src/actives/convertValue";
 import { ExpenseProps } from "@/lib/types";
 import { formatDate } from "@/src/actives/formatDate";
 import { isOverdue } from "@/src/actives/isOverdue";
-export default function CardExpense({ data }: { data: ExpenseProps }) {
-  const [checked, setChecked] = useState(false);
-  console.log(data);
 
-  const isOverdueExpense = isOverdue(data.first_due_date as string);
+interface CardExpenseProps {
+  name: string;
+  value: number;
+  date: string;
+  type: string;
+  parcelasTotal?: number;
+  parcelasPagas?: number;
+}
+
+export default function CardExpense({
+  name,
+  value,
+  date,
+  type,
+  parcelasTotal,
+  parcelasPagas,
+}: CardExpenseProps) {
+  const [checked, setChecked] = useState(false);
+
+  const isOverdueExpense = isOverdue(date as string);
 
   return (
     <section
@@ -32,7 +48,7 @@ export default function CardExpense({ data }: { data: ExpenseProps }) {
                 checked && "line-through text-neutral-500"
               } `}
             >
-              {data.name}
+              {name}
             </span>
           </div>
           <div className="flex items-center gap-4">
@@ -43,7 +59,7 @@ export default function CardExpense({ data }: { data: ExpenseProps }) {
                 </span>
               </>
             )}
-            <p className="font-semibold text-sm">{convertValue(data.value)}</p>
+            <p className="font-semibold text-sm">{convertValue(value)}</p>
           </div>
         </div>
         <div className="flex w-full items-center gap-4 ">
@@ -54,12 +70,12 @@ export default function CardExpense({ data }: { data: ExpenseProps }) {
                 : "text-neutral-600 dark:text-gray-200/80"
             }`}
           >
-            {formatDate(data.first_due_date as string)}
+            {formatDate(date as string)}
           </p>
           <p className="text-xs text-gray-600/80 font-medium bg-gray-200/60 px-2 py-1 rounded-sm dark:bg-[#2E344A] dark:text-gray-200/60 ">
-            {data.expense_type === "installment"
-              ? `${data.installments?.installment_number} / ${data.installments_count}`
-              : data.expense_type}
+            {type === "installment"
+              ? `${parcelasPagas}/ ${parcelasTotal}`
+              : type}
           </p>
         </div>
       </div>

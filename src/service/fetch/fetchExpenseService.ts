@@ -5,7 +5,7 @@ import type { ExpenseProps } from "@/lib/types";
 export async function fetchExpenseService(user_id: string) {
   const { data: expense, error } = await supabaseBrowser
     .from("expenses")
-    .select(` *, installments(*)`)
+    .select(` *`)
     .eq("user_id", user_id);
 
   if (error) {

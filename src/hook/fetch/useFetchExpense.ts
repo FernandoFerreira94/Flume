@@ -8,6 +8,7 @@ export function useFetchExpense(userId: string) {
   return useQuery<ExpenseProps[], Error>({
     queryKey: queryKey.expense(userId),
     queryFn: () => fetchExpenseService(userId),
+    enabled: !!userId,
     refetchOnWindowFocus: false,
   });
 }

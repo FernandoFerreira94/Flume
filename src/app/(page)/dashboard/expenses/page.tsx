@@ -13,12 +13,31 @@ import { useFetchExpense } from "@/src/hook/fetch/useFetchExpense";
 import CardExpense from "@/components/layout/CardExpense";
 import { useAppContext } from "@/src/context/useAppContext";
 import { Spinner } from "@/components/ui/spinner";
-
+import { useFetchExpenseInstallments } from "@/src/hook/fetch/useFetchExpenseInstallments";
+import { isInMonth } from "@/src/actives/isInMonth";
 export default function Expense() {
   const { user } = useAppContext();
   const { data: expense, isPending } = useFetchExpense(user?.id as string);
-  
+  const { data: installments, isPending: isPendingInstallments } =
+    useFetchExpenseInstallments(user?.id as string);
+  const month = 2;
+  const year = 2026;
 
+  const expensesOfMonth = expense?.filter((e) => {
+    if (e.expense_type === "fixed") return true;
+    if (e.expense_type === "single") {
+      return isInMonth(e.first_due_date!, month, year);
+    }
+    return false;
+  });
+
+  const installmentsOfMonth = installments?.filter((i) =>
+    isInMonth(i.due_date, month, year)
+  );
+
+  console.log(expensesOfMonth);
+
+  console.log(installmentsOfMonth);
   return (
     <>
       <HeaderExpense
@@ -38,10 +57,18 @@ export default function Expense() {
           </>
         )}
 
-        {expense && (
+        {installmentsOfMonth && (
           <div className=" w-full mt-8 grid grid-cols-2 gap-4">
-            {expense.map((expense) => (
-              <CardExpense data={expense} key={expense.id} />
+            {installmentsOfMonth.map((expense) => (
+              <CardExpense
+                key={expense.id}
+                name={expense.expense.name}
+                value={expense.value}
+                date={expense.due_date}
+                type={expense.expense.expense_type}
+                parcelasTotal={expense.expense.installments_count}
+                parcelasPagas={expense.installment_number}
+              />
             ))}
           </div>
         )}
