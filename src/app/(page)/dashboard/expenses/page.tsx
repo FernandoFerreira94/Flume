@@ -8,34 +8,24 @@ import dynamic from "next/dynamic";
 const FormCreateExpense = dynamic(() => import("./FormCreaterExpense"), {
   ssr: false,
 });
-
 import { useFetchExpense } from "@/src/hook/fetch/useFetchExpense";
 import CardExpense from "@/components/layout/CardExpense";
 import { useAppContext } from "@/src/context/useAppContext";
 import { Spinner } from "@/components/ui/spinner";
 import { useFetchExpenseInstallments } from "@/src/hook/fetch/useFetchExpenseInstallments";
 import { isInMonth } from "@/src/actives/isInMonth";
+
 export default function Expense() {
-  const { user } = useAppContext();
+  const { user, month, year } = useAppContext();
   const { data: expense, isPending } = useFetchExpense(user?.id as string);
   const { data: installments, isPending: isPendingInstallments } =
     useFetchExpenseInstallments(user?.id as string);
-  const month = 2;
-  const year = 2026;
 
-  const expensesOfMonth = expense?.filter((e) => {
-    if (e.expense_type === "fixed") return true;
-    if (e.expense_type === "single") {
-      return isInMonth(e.first_due_date!, month, year);
-    }
-    return false;
-  });
+  console.log(month, year);
 
   const installmentsOfMonth = installments?.filter((i) =>
     isInMonth(i.due_date, month, year)
   );
-
-  console.log(expensesOfMonth);
 
   console.log(installmentsOfMonth);
   return (
@@ -48,7 +38,7 @@ export default function Expense() {
       <Section>
         <FormCreateExpense />
 
-        {isPending && (
+        {isPending && isPendingInstallments && (
           <>
             <div className="w-full flex items-center flex-col gap-4 justify-center mt-12">
               <Spinner className="size-10" />

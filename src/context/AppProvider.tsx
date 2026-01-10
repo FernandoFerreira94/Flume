@@ -7,6 +7,10 @@ import { supabaseBrowser } from "@/lib/supabase/client";
 import type { Session } from "@supabase/supabase-js";
 import { UserSchemaProps } from "../../lib/zod/userSchema";
 
+const date = new Date();
+const monthNow = date.getMonth() + 1;
+const yearNow = date.getFullYear();
+
 interface AppProviderProps {
   children: ReactNode;
 }
@@ -16,6 +20,8 @@ export function AppProvider({ children }: AppProviderProps) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<UserSchemaProps | null>(null);
   const [loading, setLoading] = useState(true);
+  const [month, setMonth] = useState(monthNow);
+  const [year, setYear] = useState(yearNow);
 
   useEffect(() => {
     const init = async () => {
@@ -64,7 +70,11 @@ export function AppProvider({ children }: AppProviderProps) {
         session,
         isAuthenticated: !!session,
         loading,
-        user: profile, // 🔥 agora é SEMPRE igual
+        user: profile,
+        month,
+        setMonth,
+        year,
+        setYear,
       }}
     >
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

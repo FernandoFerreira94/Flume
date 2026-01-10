@@ -13,7 +13,7 @@ export function HeaderDashboard() {
           Dezembro 20025
         </h1>
         <div className="flex gap-4 items-center ">
-          <Button>
+          <Button className="bg-[#3E4864]">
             {" "}
             <Plus /> Criar despesas
           </Button>
