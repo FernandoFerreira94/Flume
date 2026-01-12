@@ -2,9 +2,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { convertValue } from "@/src/actives/convertValue";
-import { ExpenseProps } from "@/lib/types";
 import { formatDate } from "@/src/actives/formatDate";
 import { isOverdue } from "@/src/actives/isOverdue";
+import { useDeleteExpense } from "@/src/hook/delete/useDeleteExpense";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
+import { queryKey } from "@/src/hook/KeyQuery/queryKey";
 
 interface CardExpenseProps {
   name: string;
@@ -13,6 +16,8 @@ interface CardExpenseProps {
   type: string;
   parcelasTotal?: number;
   parcelasPagas?: number;
+  id: string;
+  user_id: string;
 }
 
 export default function CardExpense({
@@ -22,11 +27,29 @@ export default function CardExpense({
   type,
   parcelasTotal,
   parcelasPagas,
+  id,
+  user_id,
 }: CardExpenseProps) {
   const [checked, setChecked] = useState(false);
 
-  const isOverdueExpense = isOverdue(date as string);
+  const queryClient = useQueryClient();
 
+  const isOverdueExpense = isOverdue(date as string);
+  const { mutate: mutateDelete } = useDeleteExpense({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKey.installments(user_id),
+      });
+      toast.success("Despesa excluida com sucesso!");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  function handleDelete(expenseId: string) {
+    mutateDelete(expenseId);
+  }
   return (
     <section
       className="w-full border py-4 px-4 bg-white rounded-lg border-gray-400/60 flex gap-2 hover:shadow-lg transition duration-300 ease-in-out 
@@ -80,6 +103,7 @@ export default function CardExpense({
         </div>
       </div>
       <Trash2
+        onClick={() => handleDelete(id)}
         size={16}
         className="text-gray-400 transition duration-300 hover:text-red-600 cursor-pointer dark:hover:text-red-400"
       />

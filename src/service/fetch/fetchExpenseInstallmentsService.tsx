@@ -7,16 +7,12 @@ export async function fetchExpenseInstallmentsService(userId: string) {
     .from("installments")
     .select(
       `
-     *,
-      expense:expenses (
-        id,
-        name,
-        expense_type,
-        user_id,
-        first_due_date,
-        installments_count
-      )
-    `
+    *,
+    expense:expenses (
+      *,
+      category:categories (*)
+    )
+  `
     )
     .eq("expense.user_id", userId);
 

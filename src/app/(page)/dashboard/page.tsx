@@ -23,9 +23,16 @@ import {
 } from "@/components/ui/dialog";
 import { Section } from "@/components/layout/Section";
 import { HeaderDashboard } from "@/components/layout/HeaderDashboard";
+import { useFetchExpenseInstallments } from "@/src/hook/fetch/useFetchExpenseInstallments";
+import { useFetchCategories } from "@/src/hook/fetch/useFetchCategories";
+import { isInMonth } from "@/src/actives/isInMonth";
+import { convertValue } from "@/src/actives/convertValue";
+import { buildCategoryPercentageData } from "@/src/actives/buildCategoryPorcentageData";
+import { useFetchExpense } from "@/src/hook/fetch/useFetchExpense";
+import { filterFixedExpenses } from "@/src/actives/filterTypeExpene";
 
 export default function Dashboard() {
-  const { user } = useAppContext();
+  const { user, month, year } = useAppContext();
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -35,7 +42,31 @@ export default function Dashboard() {
     new Date(2025, 11, 15),
   ];
 
-  console.log(user);
+  const { data: installments, isPending: isPendingInstallments } =
+    useFetchExpenseInstallments(user?.id as string);
+
+  const { data: categories } = useFetchCategories(user?.id as string);
+
+  const { data: expenses } = useFetchExpense(user?.id as string);
+
+  const categoryChartData = buildCategoryPercentageData(
+    categories ?? [],
+    installments ?? []
+  );
+
+  const installmentsOfMonth = installments?.filter((i) =>
+    isInMonth(i.due_date, month, year)
+  );
+
+  const totalGastoMEs = installmentsOfMonth?.reduce(
+    (sum, item) => sum + item.value,
+    0
+  );
+
+  const { fixedExpenses, installmentsExpense } = filterFixedExpenses(
+    expenses ?? []
+  );
+
   return (
     <>
       <HeaderDashboard />
@@ -52,7 +83,13 @@ export default function Dashboard() {
         </h1>
         <div className="flex items-center space-x-4"></div>
         <p className={`text-sm mt-1 ${color.textSecondary}`}>Visão geral</p>
-        <CardGastos />
+
+        <CardGastos
+          valorTotal={totalGastoMEs ?? 0}
+          fixed={fixedExpenses.length}
+          isntallments={installmentsExpense.length ?? 0}
+        />
+
         <div className="grid grid-cols-2 gap-8 mt-8">
           <Card>
             <CardHeader>
@@ -60,45 +97,70 @@ export default function Dashboard() {
                 Gastos por categoria
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex items-center justify-center gap-4">
-              <CardDescription>
-                <ul className="gap-1 flex flex-col ">
-                  <li className="flex items-center  gap-2">Casa 33%</li>
-                  <li> Cartao lourdes 45%</li>
-                  <li> Servicos 15%</li>
-                  <li> Compras 8%</li>
-                  <li> Passeio 12%</li>
+
+            <CardContent className="flex items-center justify-between w-full  gap-4">
+              <CardDescription className="grid grid-cols-2 w-full  items-center jusctify-between gap-8">
+                <ul className="gap-1 flex flex-col w-full  ">
+                  {categories ? (
+                    categoryChartData.map((item) => (
+                      <li
+                        key={item.categoryId}
+                        className="flex items-center justify-between w-full gap-2"
+                      >
+                        <p className="whitespace-nowrap overflow-hidden text-ellipsis">
+                          {item.name}
+                        </p>
+
+                        <span className="text-sm font-medium">
+                          {item.percentage.toFixed(1)}%
+                        </span>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="w-full flex flex-col gap-1">
+                      <Skeleton className="h-7 w-full rounded-md" />
+                      <Skeleton className="h-7 w-full rounded-md" />
+                      <Skeleton className="h-7 w-full rounded-md" />
+                    </li>
+                  )}
                 </ul>
+                {categories && installments ? (
+                  <GraficoPizza
+                    categorys={categories ?? []}
+                    expenses={installments ?? []}
+                  />
+                ) : (
+                  <Skeleton className="h-40 w-40 rounded-full" />
+                )}
               </CardDescription>
-              <GraficoPizza />
             </CardContent>
-            <CardContent className="flex justify-center mt-8">
-              <CardDescription>
-                <ul>
-                  <li className="flex items-center gap-2">
-                    <div className="w-4 h-3 rounded-[2px] bg-[#8884d8]"></div>{" "}
-                    Casa
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-4 h-3 rounded-[2px] bg-[#82ca9d]"></div>{" "}
-                    Cartao lourdes
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-4 h-3 rounded-[2px] bg-[#ffc658]"></div>{" "}
-                    Servicos
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-4 h-3 rounded-[2px] bg-[#ff7f50]"></div>{" "}
-                    Compras
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-4 h-3 rounded-[2px] bg-[#3f3f3f]"></div>{" "}
-                    Passeio
-                  </li>
+
+            <CardContent className="flex justify-center mt-8 ">
+              <CardDescription className="w-full flex justify-center">
+                <ul className=" w-full flex flex-col items-center px-10">
+                  {categoryChartData &&
+                    categoryChartData.map((category) => (
+                      <li
+                        className="flex items-center gap-2 w-full "
+                        key={category.id}
+                      >
+                        <div
+                          className="w-4 h-3 rounded-[2px] "
+                          style={{ backgroundColor: `${category.color}` }}
+                        ></div>
+                        <div className="flex justify-between w-full">
+                          <span>{category.name}</span>
+                          <span className="font-semibold">
+                            {convertValue(category.total)}
+                          </span>
+                        </div>
+                      </li>
+                    ))}
                 </ul>
               </CardDescription>
             </CardContent>
           </Card>
+
           <Card>
             <CardContent>
               <Calendar
@@ -119,6 +181,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </div>
+
         <Dialog open={openDialog} onOpenChange={setOpenDialog}>
           <DialogContent>
             <DialogHeader>

@@ -47,9 +47,9 @@ export interface InstallmentProps {
   due_date: string;
   value: number;
   paid: boolean;
-
   paid_at?: string;
   expense: {
+    category_id: string;
     id: string;
     name: string;
     expense_type: string;

@@ -82,7 +82,7 @@ export default function FormCreateExpense() {
   const queryClient = useQueryClient();
   const invalidadeExpense = () =>
     queryClient.invalidateQueries({
-      queryKey: queryKey.expense(user?.id as string),
+      queryKey: queryKey.installments(user?.id as string),
     });
 
   // INSERT

@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { fetchExpenseService } from "@/src/service/fetch/fetchExpenseService";
 import { queryKey } from "../KeyQuery/queryKey";
 import type { ExpenseProps } from "@/lib/types";
+import { fetchExpenseService } from "@/src/service/fetch/fetchExpenseService";
 
 export function useFetchExpense(userId: string) {
   return useQuery<ExpenseProps[], Error>({

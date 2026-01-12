@@ -1,9 +1,8 @@
 "use client";
-import { Input } from "@/components/ui/input";
 import { color } from "@/src/styles/color";
-import { Search, Plus } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { InputDate } from "../ui/InputDate";
+import { Plus } from "lucide-react";
 
 export function HeaderDashboard() {
   return (
@@ -17,6 +16,9 @@ export function HeaderDashboard() {
             {" "}
             <Plus /> Criar despesas
           </Button>
+        </div>
+        <div className=" flex   items-end justify-end   max-sm:w-full ">
+          <InputDate />
         </div>
       </section>
     </header>
