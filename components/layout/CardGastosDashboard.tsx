@@ -15,7 +15,6 @@ export default function CardGastos({
   fixed,
   isntallments,
 }: CardGastosProps) {
-  console.log(fixed);
   return (
     <section className="grid grid-cols-3 w-full gap-8 mt-8">
       <Card

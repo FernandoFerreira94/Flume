@@ -19,6 +19,7 @@ export interface CategoryProps {
   name: string;
   color: string;
   created_at: string;
+  total_value: number;
 }
 
 export interface ExpenseProps {

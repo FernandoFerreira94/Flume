@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import { useAppContext } from "@/src/context/useAppContext";
 import { color } from "@/src/styles/color";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -30,6 +30,7 @@ import { convertValue } from "@/src/actives/convertValue";
 import { buildCategoryPercentageData } from "@/src/actives/buildCategoryPorcentageData";
 import { useFetchExpense } from "@/src/hook/fetch/useFetchExpense";
 import { filterFixedExpenses } from "@/src/actives/filterTypeExpene";
+import { useFetchCategoryTotal } from "@/src/hook/fetch/useFetchCategoryTotal";
 
 export default function Dashboard() {
   const { user, month, year } = useAppContext();
@@ -67,6 +68,9 @@ export default function Dashboard() {
     expenses ?? []
   );
 
+  const { data: categoryTotal } = useFetchCategoryTotal(user?.id as string);
+
+  console.log(categoryTotal);
   return (
     <>
       <HeaderDashboard />
@@ -151,7 +155,7 @@ export default function Dashboard() {
                         <div className="flex justify-between w-full">
                           <span>{category.name}</span>
                           <span className="font-semibold">
-                            {convertValue(category.total)}
+                            {convertValue(category.total as number)}
                           </span>
                         </div>
                       </li>
