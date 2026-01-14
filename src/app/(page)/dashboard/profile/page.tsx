@@ -97,7 +97,11 @@ export default function Profile() {
                     {user?.birth_date ? (
                       dataNascimentoFormatada
                     ) : (
-                      <Calendar22 onChange={() => {}} />
+                      <Calendar22
+                        onChange={() => {}}
+                        value={undefined}
+                        title=""
+                      />
                     )}
                   </p>
                 </div>
