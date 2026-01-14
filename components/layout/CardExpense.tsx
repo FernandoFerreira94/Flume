@@ -25,6 +25,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { formatCentsToBRL } from "@/src/app/(page)/dashboard/expenses/action";
+import { buildExpenseDays } from "@/src/actives/buildExpenseDays";
 
 interface CardExpenseProps {
   name: string;
@@ -107,14 +108,13 @@ export default function CardExpense({
 
   function onSubmit(data: ScehmaData) {
     setOpenDialog(false);
-    console.log(data);
     updadePaid({
       installments_id: installment_id,
-      paid,
       value: data.value,
       name: data.name,
-      expense_id: expense_id,
+      expense_id,
     });
+
     reset();
   }
 
@@ -129,7 +129,6 @@ export default function CardExpense({
         <Checkbox
           checked={paid}
           onCheckedChange={() => {
-            console.log(installment_id);
             updadePaid({
               installments_id: installment_id,
               paid: !paid,
@@ -166,7 +165,7 @@ export default function CardExpense({
                   : "text-neutral-600 dark:text-gray-200/80"
               }`}
             >
-              {formatDate(date as string)}
+              {formatDate(date)}
             </p>
             <p className="text-xs text-gray-600/80 font-medium bg-gray-200/60 px-2 py-1 rounded-sm dark:bg-[#2E344A] dark:text-gray-200/60 ">
               {type === "installment"

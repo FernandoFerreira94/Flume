@@ -42,6 +42,7 @@ import { queryKey } from "@/src/hook/KeyQuery/queryKey";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCreateInstallmentExpense } from "@/src/hook/insert/expense/useCreateInstallmentExpense";
 import { useCreateFixedExpense } from "@/src/hook/insert/expense/useCreateFixedExpense";
+import FormCategory from "../categories/FormCategory";
 
 // SCHEMA EXPENSE
 const schemaExpense = z
@@ -98,7 +99,6 @@ export default function FormCreateExpense() {
       },
       onError: (error) => {
         toast.error(error.message);
-        console.log(error);
       },
     });
 
@@ -114,7 +114,6 @@ export default function FormCreateExpense() {
       },
       onError: (error) => {
         toast.error(error.message);
-        console.log(error);
       },
     });
 
@@ -130,7 +129,6 @@ export default function FormCreateExpense() {
       },
       onError: (error) => {
         toast.error(error.message);
-        console.log(error);
       },
     });
 
@@ -211,7 +209,7 @@ export default function FormCreateExpense() {
       <DialogTrigger asChild>
         <Button
           disabled={disabled}
-          className="w-full items-center  h-12 dark:hover:bg-[#1F2937] bg-[#374151]"
+          className="w-full items-center h-full  dark:hover:bg-[#1F2937] bg-[#374151]"
           onClick={() => setOpenDialog(true)}
         >
           {disabled ? (
@@ -220,18 +218,14 @@ export default function FormCreateExpense() {
             <>
               {" "}
               <Plus />
-              Criar despesas
+              Despesas
             </>
           )}
         </Button>
       </DialogTrigger>
-      
+
       <DialogContent className="sm:max-w-[425px] dark:bg-[#1B1D25] font-normal">
-        <form
-          onSubmit={handleSubmit(onSubmit, (errors) => {
-            console.error("ERROS DO FORMULÁRIO:", errors);
-          })}
-        >
+        <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
             <DialogTitle>Nova despesa</DialogTitle>
             <DialogDescription className="mb-2">
@@ -342,8 +336,8 @@ export default function FormCreateExpense() {
               </div>
             )}
 
-            <div className="flex flex-col gap-4 ">
-              <div>
+            <div className="flex flex-col gap-2 ">
+              <div className=" ">
                 <Popover open={open} onOpenChange={setOpen}>
                   <Label className="mb-1">Categoria</Label>
 
@@ -399,6 +393,14 @@ export default function FormCreateExpense() {
                     </Command>
                   </PopoverContent>
                 </Popover>
+
+                <div className="w-30 h-6 pt-2 float-right ">
+                  <FormCategory
+                    variante={"link"}
+                    title="Criar categoria"
+                    iconShow={true}
+                  />
+                </div>
                 {/* Exibe erro se não houver categoria */}
                 {errors.category_id && (
                   <span className="text-red-500 text-xs">

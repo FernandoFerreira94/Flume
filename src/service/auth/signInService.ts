@@ -12,7 +12,6 @@ export async function signInService({ email, password }: SingInSchemaType) {
       });
 
     if (authError) {
-      console.log(authError?.message);
       throw new Error(`Email ou senha incorretos`);
     }
 

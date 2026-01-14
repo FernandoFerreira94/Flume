@@ -9,7 +9,6 @@ export async function loginWithGoogleService() {
   });
 
   if (error) {
-    console.error("Erro ao logar com Google:", error.message);
     throw error;
   }
 

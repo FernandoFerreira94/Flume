@@ -5,7 +5,6 @@ import Image from "next/image";
 
 export default function HeaderProfile() {
   const { user } = useAppContext();
-  console.log(user);
   return (
     <header
       className={`w-full h-50  pl-50 bg-[#374151] dark:bg-[#222222] ${color.border} border-b `}

@@ -25,7 +25,7 @@ export default function CardGastos({
           className={`text-gray-200 bg-[#6B7280] p-1.5 rounded-md `}
         />
         <p className={`text-[12px] text-gray-300`}>Gastos previsto do mês</p>
-        {valorTotal ? (
+        {valorTotal !== undefined ? (
           <p className={`text-xl font-semibold tracking-wider text-gray-50`}>
             {convertValue(valorTotal)}
           </p>
@@ -39,7 +39,7 @@ export default function CardGastos({
           className={`text-gray-800 bg-gray-300 p-1.5 rounded-md `}
         />
         <p className={`text-[12px] ${color.textSecondary}`}>Despesas fixas</p>
-        {fixed ? (
+        {fixed !== undefined ? (
           <p
             className={`text-xl font-semibold tracking-wider ${color.textPrimary}`}
           >
@@ -56,7 +56,7 @@ export default function CardGastos({
           className={`text-gray-800 bg-gray-300 p-1.5 rounded-md `}
         />
         <p className={`text-[12px] ${color.textSecondary}`}>Parcelas ativas</p>
-        {isntallments ? (
+        {isntallments !== undefined ? (
           <p
             className={`text-xl font-semibold tracking-wider ${color.textPrimary}`}
           >

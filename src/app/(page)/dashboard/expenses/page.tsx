@@ -25,8 +25,6 @@ export default function Expense() {
     isInMonth(i.due_date, month, year)
   );
 
-  console.log(installmentsOfMonth);
-
   return (
     <>
       <HeaderExpense
@@ -35,7 +33,9 @@ export default function Expense() {
         serachQuery={true}
       />
       <Section>
-        <FormCreateExpense />
+        <div className="h-12">
+          <FormCreateExpense />
+        </div>
 
         {isPendingInstallments && (
           <>

@@ -26,6 +26,7 @@ export async function CreateSingleExpenseService(data: ExpenseProps) {
       due_date: data.first_due_date,
       value: data.value,
       paid: false,
+      user_id: data.user_id,
     });
 
   if (installmentsError) {

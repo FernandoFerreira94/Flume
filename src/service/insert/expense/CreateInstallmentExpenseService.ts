@@ -42,6 +42,7 @@ export async function CreateInstallmentExpenseService(
         due_date: dueDate.toISOString().slice(0, 10),
         value: data.value,
         paid: false,
+        user_id: data.user_id,
       };
     }
   );

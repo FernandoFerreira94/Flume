@@ -1,5 +1,4 @@
 "use client";
-import { Section } from "@/components/layout/Section";
 import { SideBar } from "@/components/layout/sideBar";
 import { color } from "@/src/styles/color";
 

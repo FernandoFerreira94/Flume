@@ -27,6 +27,7 @@ import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { queryKey } from "@/src/hook/KeyQuery/queryKey";
 import { useDeleteCategory } from "@/src/hook/delete/useDeleteCategory";
+import FormCategory from "./FormCategory";
 
 const coresInput = [
   "#ef4444",
@@ -56,20 +57,6 @@ export default function Categories() {
   // Query Key
   const queryClient = useQueryClient();
 
-  //
-  const { mutate, isPending } = useCreateCategories({
-    onSuccess: () => {
-      setOpenDialog(false);
-      queryClient.invalidateQueries({
-        queryKey: queryKey.categories(user?.id as string),
-      });
-      toast.success("Categoria criada com sucesso!");
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
-
   const { mutate: mutateUpdate, isPending: isPendingUpdate } =
     useUpdateCategory({
       onSuccess: () => {
@@ -96,18 +83,6 @@ export default function Categories() {
     },
   });
 
-  function handleColorClick(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    if (user) {
-      mutate({
-        name: nameCategories,
-        color: selectedColor,
-        user_id: user.id,
-      });
-    }
-  }
-
   // Fetch Categories
   const { data: categories, isLoading } = useFetchCategories(
     user?.id as string
@@ -125,8 +100,6 @@ export default function Categories() {
     setNameCategories("");
     setSelectedColor("#cccccc");
   };
-
-  console.log(categories);
 
   function handleEditCategory(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -153,14 +126,9 @@ export default function Categories() {
     <>
       <HeaderExpense titulo="Categorias" />
       <Section>
-        <Button
-          className="w-full items-center  h-12 dark:hover:bg-[#1F2937]"
-          onClick={() => setOpenDialog(true)}
-        >
-          {" "}
-          <Plus />
-          Nova categoria
-        </Button>
+        <div className="h-12">
+          <FormCategory />
+        </div>
 
         {isLoading && (
           <div className="w-full flex justify-center mt-14 flex-col items-center gap-4">
@@ -177,7 +145,7 @@ export default function Categories() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-x-8 gap-y-8 pt-8 w-full">
+          <div className="grid grid-cols-3 gap-x-8 gap-y-4 pt-8 w-full">
             {categories?.map((category) => (
               <Card key={category.id} className="mt-0 w-full px-0 py-4 grid">
                 <CardHeader className="flex gap-4 justify-between items-center">
@@ -194,14 +162,14 @@ export default function Categories() {
                   </div>
                   <div className={`flex items-center gap-2  } `}>
                     <SquarePen
-                      size={28}
-                      className={`transition ${color.textMuted} duration-300 ease-in-out  border-transparent p-1 rounded-sm hover:border-[#6B7280]/80 cursor-pointer`}
+                      size={23}
+                      className={`transition ${color.textMuted} duration-300 ease-in-out  border-transparent p-1 rounded-sm hover:border-[#6B7240]/80 cursor-pointer`}
                       onClick={() => handleOpenEdit(category)}
                     />
                     <Trash
                       onClick={() => handleDeleteCategory(category.id)}
-                      size={28}
-                      className={`transition text-red-400 duration-300 ease-in-out border-2 border-transparent p-1 rounded-sm hover:border-red-400 cursor-pointer`}
+                      size={23}
+                      className={`transition text-red-400 duration-300 ease-in-out border-2 border-transparent p-0.5 rounded-sm hover:border-red-400 cursor-pointer`}
                     />
                   </div>
                 </CardHeader>
@@ -209,71 +177,6 @@ export default function Categories() {
             ))}
           </div>
         )}
-
-        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Nova categoria</DialogTitle>
-              <DialogDescription>
-                Crie uma nova categoria de despesa
-              </DialogDescription>
-            </DialogHeader>
-            <form className="flex flex-col gap-4" onSubmit={handleColorClick}>
-              <div>
-                <Label htmlFor="nameCategories">Nome</Label>
-                <Input
-                  id="nameCategories"
-                  className="mt-2"
-                  value={nameCategories}
-                  onChange={(e) => setNameCategories(e.target.value)}
-                  placeholder="Ex: Alimentação"
-                />
-              </div>
-
-              <div>
-                <Label>Cor</Label>
-                <div className="grid grid-cols-7 gap-2 mt-2">
-                  {coresInput.map((color) => {
-                    const isSelected = selectedColor === color;
-
-                    return (
-                      <button
-                        key={color}
-                        type="button"
-                        onClick={() => setSelectedColor(color)}
-                        className={cn(
-                          "w-10 h-10 rounded-md transition-all border cursor-pointer",
-                          "hover:scale-110",
-                          isSelected
-                            ? `border-gray-700 border-2 shadow-[${color}] dark:border-gray-100 scale-120`
-                            : "border-gray-500 "
-                        )}
-                        style={{ backgroundColor: color }}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setOpenDialog(false)}
-                >
-                  Cancelar
-                </Button>
-
-                <Button
-                  type="submit"
-                  disabled={!nameCategories || !selectedColor}
-                >
-                  {isPending ? <Spinner /> : "Criar"}
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
 
         <Dialog
           open={!!editingCategory} // Abre se houver uma categoria selecionada

@@ -75,11 +75,11 @@ export function SideBar() {
             className={`flex flex-col gap-2 px-3 py-4 border-t ${color.border} ${color.border}`}
           >
             <li
-              className={`flex gap-2 items-center  rounded-md cursor-pointer  dark:hover:bg-[#1B1D25] `}
+              className={`flex gap-2 items-center  rounded-md cursor-pointer   `}
             >
               <Link
                 href="/dashboard/profile"
-                className={`flex gap-2 items-center rounded-md cursor-pointer  dark:hover:bg-[#1B1D25] `}
+                className={`flex gap-2 items-center rounded-md cursor-pointer  `}
               >
                 {user?.avatar_url ? (
                   <Image

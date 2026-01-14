@@ -46,7 +46,6 @@ export function SheetRegister({ titulo }: SheetRegisterProps) {
   const { mutate, isPending } = useSignUp({
     onSuccess: (data) => {
       router.push("/");
-      console.log(data);
     },
     onError: (error) => {
       toast.error(error.message);
@@ -55,7 +54,6 @@ export function SheetRegister({ titulo }: SheetRegisterProps) {
 
   function onSubmit(data: SignUpSchemaType) {
     mutate(data);
-    console.log(data);
   }
 
   return (

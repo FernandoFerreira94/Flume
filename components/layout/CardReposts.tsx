@@ -1,8 +1,34 @@
+"use client";
 import { Card } from "@/components/ui/card";
 import { color } from "@/src/styles/color";
 import { Calendar, ChartPie, TrendingUp } from "lucide-react";
+import { useFetchExpenseInstallments } from "@/src/hook/fetch/useFetchExpenseInstallments";
+import { useAppContext } from "@/src/context/useAppContext";
+import { sumUnpaidInstallments } from "@/src/actives/sumnUnPaidInstallments";
+import { convertValue } from "@/src/actives/convertValue";
+import { filterFixedExpenses } from "@/src/actives/filterTypeExpene";
+import { useFetchExpense } from "@/src/hook/fetch/useFetchExpense";
+import { Skeleton } from "../ui/skeleton";
 
 export default function CardReports() {
+  const { user } = useAppContext();
+  const { data: isntallments } = useFetchExpenseInstallments(
+    user?.id as string
+  );
+
+  const { data: expenses } = useFetchExpense(user?.id as string);
+
+  const expenseTotal = sumUnpaidInstallments(isntallments ?? []);
+
+  const { installmentsExpense } = filterFixedExpenses(expenses ?? []);
+
+  function dividirTotal(valorTotal: number, count: number) {
+    const result = (valorTotal / count).toFixed(2);
+    return result;
+  }
+
+  const media = dividirTotal(expenseTotal, isntallments?.length ?? 0);
+
   return (
     <section className="grid grid-cols-3 w-full gap-8 mt-8">
       <Card className={` flex flex-col gap-3 p-4 rounded-md grid-cols-3`}>
@@ -18,7 +44,7 @@ export default function CardReports() {
         <p
           className={`text-xl font-semibold tracking-wider ${color.textPrimary}`}
         >
-          R$ 141,00
+          {convertValue(expenseTotal)}
         </p>
       </Card>
       <Card className={` flex flex-col gap-3 p-4 rounded-md grid-cols-3`}>
@@ -34,7 +60,7 @@ export default function CardReports() {
         <p
           className={`text-xl font-semibold tracking-wider ${color.textPrimary}`}
         >
-          R$ 141,00
+          {convertValue(Number(media))}
         </p>
       </Card>
 
@@ -48,11 +74,16 @@ export default function CardReports() {
             Parcelas ativas
           </p>
         </div>
-        <p
-          className={`text-xl font-semibold tracking-wider ${color.textPrimary}`}
-        >
-          0
-        </p>
+        <p className={`text-[12px] ${color.textSecondary}`}>Parcelas ativas</p>
+        {installmentsExpense !== undefined ? (
+          <p
+            className={`text-xl font-semibold tracking-wider ${color.textPrimary}`}
+          >
+            {installmentsExpense.length}
+          </p>
+        ) : (
+          <Skeleton className="w-8 h-6" />
+        )}
       </Card>
     </section>
   );

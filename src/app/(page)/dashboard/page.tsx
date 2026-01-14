@@ -55,7 +55,6 @@ export default function Dashboard() {
       queryClient.invalidateQueries({
         queryKey: queryKey.installments(user?.id as string),
       });
-      console.log(Variable);
       if (Variable.paid) {
         toast.success("Pago!");
       } else {

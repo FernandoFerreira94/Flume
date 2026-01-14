@@ -20,7 +20,6 @@ export async function updatePaidExpenseService({
     .from("installments")
     .update({
       paid,
-
       value,
     })
     .eq("id", installments_id)
