@@ -25,6 +25,8 @@ export default function Expense() {
     isInMonth(i.due_date, month, year)
   );
 
+  console.log(installmentsOfMonth);
+
   return (
     <>
       <HeaderExpense
@@ -49,6 +51,7 @@ export default function Expense() {
             {installmentsOfMonth.map((expense) => (
               <CardExpense
                 key={expense.id}
+                installment_id={expense.id}
                 user_id={expense.expense.user_id}
                 name={expense.expense.name}
                 value={expense.value}
@@ -56,7 +59,8 @@ export default function Expense() {
                 type={expense.expense.expense_type}
                 parcelasTotal={expense.expense.installments_count}
                 parcelasPagas={expense.installment_number}
-                id={expense.expense.id}
+                expense_id={expense.expense.id}
+                paid={expense.paid}
               />
             ))}
           </div>

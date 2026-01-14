@@ -11,14 +11,12 @@ export function HeaderDashboard() {
         <h1 className={`text-xl font-semibold ${color.textPrimary}`}>
           Dezembro 20025
         </h1>
-        <div className="flex gap-4 items-center ">
+        <div className=" flex  gap-4 items-end justify-end   max-sm:w-full ">
+          <InputDate />
           <Button className="bg-[#3E4864]">
             {" "}
             <Plus /> Criar despesas
           </Button>
-        </div>
-        <div className=" flex   items-end justify-end   max-sm:w-full ">
-          <InputDate />
         </div>
       </section>
     </header>

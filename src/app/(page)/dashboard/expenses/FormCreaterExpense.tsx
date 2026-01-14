@@ -225,6 +225,7 @@ export default function FormCreateExpense() {
           )}
         </Button>
       </DialogTrigger>
+      
       <DialogContent className="sm:max-w-[425px] dark:bg-[#1B1D25] font-normal">
         <form
           onSubmit={handleSubmit(onSubmit, (errors) => {
@@ -233,7 +234,9 @@ export default function FormCreateExpense() {
         >
           <DialogHeader>
             <DialogTitle>Nova despesa</DialogTitle>
-            <DialogDescription>Criar uma despesa nova</DialogDescription>
+            <DialogDescription className="mb-2">
+              Criar uma despesa nova
+            </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4">
             <div className="grid gap-1 relative">
