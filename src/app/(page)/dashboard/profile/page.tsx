@@ -21,7 +21,7 @@ import { Calendar22 } from "@/components/ui/dateBirth";
 import { Section } from "@/components/layout/Section";
 import HeaderProfile from "@/components/layout/HeaderProfile";
 
-// Profile
+
 export default function Profile() {
   const { user } = useAppContext();
   const router = useRouter();
