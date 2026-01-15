@@ -4,7 +4,7 @@ export async function loginWithGoogleService() {
   const { data, error } = await supabaseBrowser.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo: `https://flume-sigma.vercel.app`,
     },
   });
 
