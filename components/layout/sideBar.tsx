@@ -24,8 +24,8 @@ export function SideBar() {
       <header
         // 1. Largura, Altura Total da Tela e Posição Fixa
         className={`
-      4 w-50 h-screen fixed 
-        border-r 
+      4 w-50  h-screen fixed  bottom-0 z-20
+        border-r   max-sm:w-full  max-sm:h-20
         ${color.surface}
        
         ${color.border}
@@ -33,7 +33,7 @@ export function SideBar() {
       >
         <div
           className={`
-          flex items-center gap-2 w-full py-5 pl-4 border-b 
+          flex items-center gap-2 w-full py-5 pl-4 border-b  max-sm:hidden
            ${color.border} 
         `}
         >
@@ -49,17 +49,17 @@ export function SideBar() {
           </span>
         </div>
 
-        <nav className="h-[calc(100vh-69px)] flex flex-col justify-between  ">
-          <ul className="space-y-1 px-3 py-4">
+        <nav className="h-[calc(100vh-69px)] flex flex-col justify-between   max-sm:h-full  max-sm:flex-row">
+          <ul className="space-y-1 px-3 py-4  max-sm:flex  max-sm:justify-between  max-sm:w-full">
             {navItems.map((item) => {
               const Icon = item.icon; // Componente do ícone
               return (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className={`flex gap-2 items-center px-3 py-2.5 rounded-md cursor-pointer ${
+                    className={`flex  max-sm:flex-col gap-2  max-sm:gap-1 items-center px-3  max-sm:px-1  max-sm:py-1 py-2.5 rounded-md cursor-pointer ${
                       pathname === item.href
-                        ? `${color.backGroundGradient} text-[#F6F3ED] dark:text-[#F6F3ED] }`
+                        ? `${color.backGroundGradient}  text-[#F6F3ED] dark:text-[#F6F3ED] }`
                         : "hover:bg-[#F6F3ED] dark:hover:bg-[#1B1D25] "
                     }`}
                   >
@@ -72,7 +72,7 @@ export function SideBar() {
           </ul>
 
           <ul
-            className={`flex flex-col gap-2 px-3 py-4 border-t ${color.border} ${color.border}`}
+            className={`flex flex-col gap-2 px-3 py-4 border-t  max-sm:hidden ${color.border} ${color.border}`}
           >
             <li
               className={`flex gap-2 items-center  rounded-md cursor-pointer   `}

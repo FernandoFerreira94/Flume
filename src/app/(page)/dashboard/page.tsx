@@ -95,7 +95,7 @@ export default function Dashboard() {
       <HeaderDashboard />
       <Section>
         <h1
-          className={`text-2xl font-semibold flex gap-2 items-center ${color.textPrimary}`}
+          className={`text-2xl max-sm:text-3xl max-sm:font-bold font-semibold flex gap-2 items-center ${color.textPrimary}`}
         >
           Olá,{" "}
           {user ? (
@@ -104,7 +104,7 @@ export default function Dashboard() {
             <Skeleton className="h-8 w-50 rounded-md" />
           )}
         </h1>
-        <div className="flex items-center space-x-4"></div>
+
         <p className={`text-sm mt-1 ${color.textSecondary}`}>Visão geral</p>
 
         <CardGastos
@@ -113,22 +113,23 @@ export default function Dashboard() {
           isntallments={installmentsExpense.length ?? 0}
         />
 
-        <div className="grid grid-cols-2 gap-8 mt-8">
+        <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-8 mt-8">
           <Card>
             <CardHeader>
-              <CardTitle className={`font-medium text-md ${color.textPrimary}`}>
+              <CardTitle
+                className={`font-medium text-md max-sm:text-xl max-sm:font-semibold ${color.textPrimary}`}
+              >
                 Gastos por categoria
               </CardTitle>
             </CardHeader>
-
-            <CardContent className="flex items-center justify-between w-full  gap-4">
-              <CardDescription className="grid grid-cols-2 w-full  items-center jusctify-between gap-8">
-                <ul className="gap-1 flex flex-col w-full  ">
+            <CardContent className="flex items-center justify-between w-full  gap-4 ">
+              <CardDescription className="grid grid-cols-2 max-sm:grid-cols-1 w-full  items-center jusctify-between max-sm:jusctify-end ">
+                <ul className="gap-1 flex flex-col w-full ">
                   {categoryChartData ? (
                     categoryChartData.map((item) => (
                       <li
                         key={item.categoryId}
-                        className="flex items-center justify-between w-full gap-2"
+                        className="flex items-center justify-between max-sm:w-2/3 w-full gap-2"
                       >
                         <div className="flex gap-1 items-center">
                           <div
@@ -153,31 +154,34 @@ export default function Dashboard() {
                     </li>
                   )}
                 </ul>
+
                 {categories && installments ? (
-                  <GraficoPizza
-                    categorys={categories ?? []}
-                    expenses={installments ?? []}
-                  />
+                  <div className="w-full  flex justify-center mt-8 mb-4">
+                    <GraficoPizza
+                      categorys={categories ?? []}
+                      expenses={installments ?? []}
+                    />
+                  </div>
                 ) : (
                   <Skeleton className="h-40 w-40 rounded-full" />
                 )}
               </CardDescription>
             </CardContent>
-
-            <CardContent className="flex justify-center mt-8 ">
-              <CardDescription className="w-full flex justify-center">
-                <ul className=" w-full flex flex-col items-center px-10">
+            <h1 className="ml-7 font-regular text-base">Valor total</h1>
+            <CardContent className="flex justify-start  p-0 mt-0 ">
+              <CardDescription className="w-full flex justify-start  ">
+                <ul className=" w-full flex flex-col  items-start justify-end  px-10">
                   {categoryChartData &&
                     categoryChartData.map((category) => (
                       <li
-                        className="flex items-center gap-2 w-full "
+                        className="flex items-center w-2/3 max-sm:w-full gap-2  "
                         key={category.id}
                       >
                         <div
                           className="w-4 h-3 rounded-[2px] "
                           style={{ backgroundColor: `${category.color}` }}
                         ></div>
-                        <div className="flex justify-between w-full">
+                        <div className="flex justify-between  w-full">
                           <span>{category.name}</span>
                           <span className="font-semibold">
                             {convertValue(category.total as number)}

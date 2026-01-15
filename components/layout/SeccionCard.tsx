@@ -2,7 +2,7 @@ import { Calendar, CreditCard, TrendingUp } from "lucide-react";
 import { color } from "@/src/styles/color";
 export function SeccionCard() {
   return (
-    <div className="w-full flex my-20 h-full p-8 bg-transparent  justify-around">
+    <div className="w-full flex max-sm:flex-col max-sm:gap-8 my-20 max-sm:my-0 h-full p-8 bg-transparent  justify-around ">
       <div className="flex flex-col items-center gap-4 ">
         <div
           className={` ${color.backGroundGradient}  flex items-center justify-center rounded-xl p-4 w-16 shadow-lg transition hover:scale-110 duration-400 ease-in-out`}

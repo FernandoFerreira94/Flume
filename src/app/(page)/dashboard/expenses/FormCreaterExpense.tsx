@@ -209,7 +209,7 @@ export default function FormCreateExpense() {
       <DialogTrigger asChild>
         <Button
           disabled={disabled}
-          className="w-full items-center h-full  dark:hover:bg-[#1F2937] bg-[#374151]"
+          className="w-full items-center h-full max-sm:text-none dark:hover:bg-[#1F2937] bg-[#374151] "
           onClick={() => setOpenDialog(true)}
         >
           {disabled ? (
@@ -217,8 +217,8 @@ export default function FormCreateExpense() {
           ) : (
             <>
               {" "}
-              <Plus />
-              Despesas
+              <Plus className="max-sm:size-7 size-4" />
+              <span className="hidden sm:inline ml-2">Despesas</span>
             </>
           )}
         </Button>

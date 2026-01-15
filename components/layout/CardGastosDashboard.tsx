@@ -16,29 +16,33 @@ export default function CardGastos({
   isntallments,
 }: CardGastosProps) {
   return (
-    <section className="grid grid-cols-3 w-full gap-8 mt-8">
+    <section className="grid grid-cols-3 max-sm:grid-cols-1 max-sm:gap-4 w-full gap-8 mt-8 max-sm:mt-8">
       <Card
-        className={`${color.backGroundGradient} flex flex-col gap-3 p-4 rounded-md grid-cols-3`}
+        className={`${color.backGroundGradient} flex flex-col gap-3 p-4 rounded-md `}
       >
         <TrendingUp
           size={30}
-          className={`text-gray-200 bg-[#6B7280] p-1.5 rounded-md `}
+          className={`text-gray-200 bg-[#6B7280] p-1.5 rounded-md max-sm:size-10`}
         />
-        <p className={`text-[12px] text-gray-300`}>Gastos previsto do mês</p>
+        <p className={`text-[12px] text-gray-300 max-sm:text-base`}>
+          Gastos previsto do mês
+        </p>
         {valorTotal !== undefined ? (
-          <p className={`text-xl font-semibold tracking-wider text-gray-50`}>
+          <p className={`text-xl font-semibold tracking-wider text-gray-50 `}>
             {convertValue(valorTotal)}
           </p>
         ) : (
           <Skeleton className="w-2/3 h-6 bg-[#6B7280]" />
         )}
       </Card>
-      <Card className={` flex flex-col gap-3 p-4 rounded-md grid-cols-3`}>
+      <Card className={` flex flex-col gap-3 p-4 rounded-md `}>
         <Calendar
           size={30}
-          className={`text-gray-800 bg-gray-300 p-1.5 rounded-md `}
+          className={`text-gray-800 bg-gray-300 p-1.5 rounded-md max-sm:size-10`}
         />
-        <p className={`text-[12px] ${color.textSecondary}`}>Despesas fixas</p>
+        <p className={`text-[12px] max-sm:text-base ${color.textSecondary}`}>
+          Despesas fixas
+        </p>
         {fixed !== undefined ? (
           <p
             className={`text-xl font-semibold tracking-wider ${color.textPrimary}`}
@@ -50,12 +54,14 @@ export default function CardGastos({
         )}
       </Card>
 
-      <Card className={` flex flex-col gap-3 p-4 rounded-md grid-cols-3`}>
+      <Card className={` flex flex-col gap-3 p-4 rounded-md `}>
         <CreditCard
           size={30}
-          className={`text-gray-800 bg-gray-300 p-1.5 rounded-md `}
+          className={`text-gray-800 bg-gray-300 p-1.5 rounded-md max-sm:size-10`}
         />
-        <p className={`text-[12px] ${color.textSecondary}`}>Parcelas ativas</p>
+        <p className={`text-[12px] max-sm:text-base ${color.textSecondary}`}>
+          Parcelas ativas
+        </p>
         {isntallments !== undefined ? (
           <p
             className={`text-xl font-semibold tracking-wider ${color.textPrimary}`}

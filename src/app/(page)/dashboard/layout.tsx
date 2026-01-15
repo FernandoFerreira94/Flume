@@ -9,7 +9,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <main
-      className={`relative w-full min-h-screen flex flex-col ${color.background} `}
+      className={`relative w-full min-h-screen flex flex-col  max-sm:mb-10 ${color.background} `}
     >
       <SideBar />
       {children}

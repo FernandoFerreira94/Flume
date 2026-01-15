@@ -7,7 +7,7 @@ export default function HeaderProfile() {
   const { user } = useAppContext();
   return (
     <header
-      className={`w-full h-50  pl-50 bg-[#374151] dark:bg-[#222222] ${color.border} border-b `}
+      className={`w-full h-50  pl-50 bg-[#374151] dark:bg-[#222222] ${color.border} border-b  max-sm:pl-0`}
     >
       <article className="w-full h-full items-center justify-center flex  flex-col gap-4">
         <div className="w-18 h-18 bg-[#F6F3ED] rounded-full overflow-hidden flex items-center justify-center">

@@ -81,13 +81,17 @@ export const AnimatedThemeToggler = ({
     >
       {isDark ? (
         <>
-          <Sun size={18} />
-          <span className={color.textPrimary}>Light Mode</span>
+          <Sun size={18} className=" max-sm:size-18" />
+          <span className={`${color.textPrimary}  max-sm:hidden`}>
+            Light Mode
+          </span>
         </>
       ) : (
         <>
           <Moon size={18} />{" "}
-          <span className={color.textPrimary}>Dark Mode</span>
+          <span className={`${color.textPrimary}  max-sm:hidden`}>
+            Dark Mode
+          </span>
         </>
       )}
       <span className="sr-only">Toggle theme</span>

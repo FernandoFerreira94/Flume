@@ -7,10 +7,10 @@ import { color } from "../styles/color";
 export default function Login() {
   return (
     <>
-      <div className={`w-full min-h-screen ${color.surfaceAlt}`}>
-        <main className="container mx-auto min-h-screen relative flex flex-col">
+      <div className={`w-full min-h-screen  ${color.surfaceAlt}`}>
+        <main className="container mx-auto min-h-screen relative flex flex-col ">
           <Header />
-          <section className="w-full flex justify-around mt-40 h-full">
+          <section className="w-full flex items-center  justify-around mt-40 max-sm:mt-8 h-full max-sm:flex-col">
             <TextLogin />
             <RelatorioLogin />
           </section>
