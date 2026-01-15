@@ -9,10 +9,13 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getSession();
   const isPrivateRoute = request.nextUrl.pathname.startsWith("/dashboard");
 
+  /*
   if (isPrivateRoute && !session) {
     const loginUrl = new URL("/", request.url);
     return NextResponse.redirect(loginUrl);
   }
+
+  */
 
   return response;
 }
