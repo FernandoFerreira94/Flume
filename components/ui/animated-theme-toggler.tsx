@@ -80,19 +80,15 @@ export const AnimatedThemeToggler = ({
       {...props}
     >
       {isDark ? (
-        <>
-          <Sun size={18} className=" max-sm:size-18" />
-          <span className={`${color.textPrimary}  max-sm:hidden`}>
-            Light Mode
-          </span>
-        </>
+        <div className="flex justify-center max-sm:flex-col items-center gap-2 ">
+          <Sun size={18} className="max-sm:size-7" />
+          <span className={color.textPrimary}>Light Mode</span>
+        </div>
       ) : (
-        <>
-          <Moon size={18} />{" "}
-          <span className={`${color.textPrimary}  max-sm:hidden`}>
-            Dark Mode
-          </span>
-        </>
+        <div className="flex justify-center max-sm:flex-col items-center gap-2">
+          <Moon size={18} className=" max-sm:size-7" />{" "}
+          <span className={color.textPrimary}>Dark Mode</span>
+        </div>
       )}
       <span className="sr-only">Toggle theme</span>
     </button>

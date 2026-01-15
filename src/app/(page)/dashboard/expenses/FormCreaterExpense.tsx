@@ -71,7 +71,11 @@ const schemaExpense = z
 
 type SchemaExpenseType = z.infer<typeof schemaExpense>;
 
-export default function FormCreateExpense() {
+export default function FormCreateExpense({
+  title = true,
+}: {
+  title?: boolean;
+}) {
   const { user } = useAppContext();
   const [openDialog, setOpenDialog] = useState(false);
   const [open, setOpen] = useState(false);
@@ -218,7 +222,7 @@ export default function FormCreateExpense() {
             <>
               {" "}
               <Plus className="max-sm:size-7 size-4" />
-              <span className="hidden sm:inline ml-2">Despesas</span>
+              {title && <span>Despesas</span>}
             </>
           )}
         </Button>

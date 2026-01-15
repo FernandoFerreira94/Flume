@@ -124,7 +124,7 @@ export default function Categories() {
 
   return (
     <>
-      <HeaderExpense titulo="Categorias" />
+      <HeaderExpense titulo="Categorias" subTitulo="Categorias de despesas" />
       <Section>
         <div className="h-12">
           <FormCategory />
@@ -145,7 +145,7 @@ export default function Categories() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-3 gap-x-8 gap-y-4 pt-8 w-full">
+          <div className="grid grid-cols-3 max-sm:grid-cols-1 gap-x-8 gap-y-4 pt-8 w-full">
             {categories?.map((category) => (
               <Card key={category.id} className="mt-0 w-full px-0 py-4 grid">
                 <CardHeader className="flex gap-4 justify-between items-center">

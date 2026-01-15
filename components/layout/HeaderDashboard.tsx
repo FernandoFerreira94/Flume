@@ -29,7 +29,7 @@ export function HeaderDashboard() {
         <div className=" flex  gap-4 items-center justify-end   max-sm:gap-2 ">
           <InputDate />
           <div className="max-sm:w-16 max-sm:h-11">
-            <FormCreateExpense />
+            <FormCreateExpense title={false} />
           </div>
         </div>
       </section>

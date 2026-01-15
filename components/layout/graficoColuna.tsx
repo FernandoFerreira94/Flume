@@ -43,13 +43,14 @@ export function GraficoColuna() {
   }, [categories]);
 
   return (
-    <ChartContainer config={dynamicChartConfig} className="p-2 w-full">
+    <ChartContainer config={dynamicChartConfig} className="p-2 w-full ">
       <BarChart data={chartData} barCategoryGap={32} barGap={6}>
         <CartesianGrid vertical={false} />
 
         <XAxis dataKey="month" />
 
         <YAxis
+          className=""
           tickLine={false}
           axisLine={true}
           tickFormatter={(value) =>

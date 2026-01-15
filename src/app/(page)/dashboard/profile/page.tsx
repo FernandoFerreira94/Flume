@@ -20,12 +20,17 @@ import { supabaseBrowser } from "@/lib/supabase/client";
 import { Calendar22 } from "@/components/ui/dateBirth";
 import { Section } from "@/components/layout/Section";
 import HeaderProfile from "@/components/layout/HeaderProfile";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 
 export default function Profile() {
   const { user } = useAppContext();
   const router = useRouter();
-  const dateFormatada = formatDate(user?.created_at as string);
+
   const dataNascimentoFormatada = formatDate(user?.birth_date as string);
+  function formatDateBR(isoDate: string) {
+    return new Date(isoDate).toLocaleDateString("pt-BR");
+  }
+  const mebroDesde = formatDateBR(user?.created_at as string);
 
   async function handleLogout() {
     supabaseBrowser.auth.signOut();
@@ -72,7 +77,7 @@ export default function Profile() {
                 Membro desde
               </Label>
               {user ? (
-                <p>{dateFormatada}</p>
+                <p>{mebroDesde}</p>
               ) : (
                 <Skeleton className="h-6 w-50 rounded-md" />
               )}
@@ -129,6 +134,16 @@ export default function Profile() {
             </CardDescription>
           </CardHeader>
         </Card>
+
+        <Card className="mt-4 hidden max-sm:flex justify-center ">
+          <CardHeader className="">
+            <CardTitle className="font-medium">Modo tema</CardTitle>
+            <CardDescription className="mt-2">
+              <AnimatedThemeToggler />
+            </CardDescription>
+          </CardHeader>
+        </Card>
+
         <Button
           onClick={handleLogout}
           variant={"outline"}

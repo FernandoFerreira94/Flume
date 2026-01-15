@@ -1,5 +1,4 @@
 "use client";
-
 import { HeaderExpense } from "@/components/layout/HeaderExpense";
 import { Section } from "@/components/layout/Section";
 import { Calendar } from "lucide-react";
@@ -36,7 +35,6 @@ export default function Expense() {
         <div className="h-12">
           <FormCreateExpense />
         </div>
-
         {isPendingInstallments && (
           <>
             <div className="w-full flex items-center flex-col gap-4 justify-center mt-12">
@@ -45,9 +43,8 @@ export default function Expense() {
             </div>
           </>
         )}
-
         {installmentsOfMonth && (
-          <div className=" w-full mt-8 grid grid-cols-2 gap-4">
+          <div className=" w-full mt-8 grid grid-cols-2 max-sm:grid-cols-1 gap-4 ">
             {installmentsOfMonth.map((expense) => (
               <CardExpense
                 key={expense.id}
