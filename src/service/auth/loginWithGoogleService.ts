@@ -5,7 +5,6 @@ export async function loginWithGoogleService() {
     provider: "google",
     options: {
       redirectTo: "https://flume-sigma.vercel.app/dashboard",
-      // `https://flume-sigma.vercel.app/dashboard`,
     },
   });
 

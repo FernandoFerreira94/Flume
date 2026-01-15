@@ -28,7 +28,7 @@ export function TextLogin() {
           controle parcelas e nunca seja pego de surpresa.
         </TextAnimate>
       </div>
-      <div className="bg-[#1F2937] dark:bg-[#374151] h-10 w-00 max-sm:w-full mt-10 rounded-lg text-gray-100 flex items-center justify-center font-light ">
+      <div className="bg-[#1F2937] dark:bg-[#374151] h-10 w-1/2 max-sm:w-full mt-10 rounded-lg text-gray-100 flex items-center justify-center font-light ">
         <SheetRegister titulo="Começar agora" />
       </div>{" "}
     </section>
